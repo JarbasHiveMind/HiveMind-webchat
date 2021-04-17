@@ -1,5 +1,7 @@
 # HiveMind - WebChat Terminal
 
+![logo](./javascript.png)
+
 Mycroft Webchat Terminal - Connecting to the HiveMind with javascript reference implementation
 
 This uses tornado to serve the webchat
