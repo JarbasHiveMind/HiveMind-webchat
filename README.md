@@ -1,8 +1,8 @@
-# HiveMind - WebChat Terminal
+# HiveMind - Local WebChat
 
 ![logo](./javascript.png)
 
-Mycroft Webchat Terminal - Connecting to the HiveMind with javascript reference implementation
+Mycroft Webchat Terminal - Connecting to the HiveMind with [javascript](https://github.com/JarbasHiveMind/HiveMind-js) reference implementation
 
 This uses tornado to serve the webchat
 
@@ -11,17 +11,28 @@ This uses tornado to serve the webchat
 
 ## Usage
 
-change hivemind settings at ```tornado_webchat/static/js/app.js```
+This uses [HiveMindJs](https://github.com/JarbasHiveMind/HiveMind-js)
 
-run ```python tornado_webchat/__main__.py```
+change hivemind settings at ```hivemind_webchat/static/js/app.js```
 
-Access from web browser http://your_ip_address:9090
+run ```python -m hivemind_webchat```
+
+Access from web browser `http://localhost:9090`
+
+default settings are
+```javascript
+// HiveMind socket
+user = "HivemindWebChat";
+key = "ivf1NQSkQNogWYyr";
+crypto_key = "ivf1NQSkQNogWYyr";
+ip = "127.0.0.1";
+port = 5678;
+hivemind_address = 'ws://' + ip + ":" + port
+```
 
 ## Privacy
 
 Securing tornado is out of scope for this repo, it is currently served by HTTP, you probably want to set up nginx or equivalent with [let's encrypt](https://letsencrypt.org/) certificates
-
-Hivemind connection is http by default! This is because browsers reject self signed certs, you may want to use [let's  encrypt](https://letsencrypt.org/) certificates and configure [HiveMind-core](https://github.com/OpenJarbas/HiveMind-core) to use them
 
 Hivemind Encryption is supported
 

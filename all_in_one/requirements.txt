@@ -1,0 +1,4 @@
+mycroft-lib[bus]==2021.4.2a13
+mycroft-lib[skills]==2021.4.2a13
+mycroft-lib[lingua_franca]==2021.4.2a13
+jarbas_hive_mind==0.10.7

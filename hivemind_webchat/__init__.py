@@ -42,7 +42,7 @@ class WebChat(threading.Thread):
 
         application = tornado.web.Application(routes, **settings)
         httpServer = tornado.httpserver.HTTPServer(application)
-        tornado.options.parse_command_line()
+
         httpServer.listen(self.port)
         tornado.ioloop.IOLoop.instance().start()
 
