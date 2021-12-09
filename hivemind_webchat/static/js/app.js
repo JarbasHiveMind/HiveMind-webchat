@@ -9,14 +9,22 @@
 
 */
 // HiveMind socket
-const user = "HivemindWebChat";
-const key = "ivf1NQSkQNogWYyr";
-const ip = "127.0.0.1";
-const port = 5678;
-const crypto_key = "ivf1NQSkQNogWYyr";
+const user = "HivemindWebChatV0.2";
+var key = "DEMO";
+var ip = "0.0.0.0";
+var port = 5678;
+var crypto_key = null;
 
 
 $(document).ready(function () {
+    // prompt user for hivemind creds
+    // TODO a nice modal
+    let host = prompt("Please enter HiveMind host (wss not supported!)", "0.0.0.0:5678");
+    key = prompt("Please enter HiveMind access key", "your_access_key");
+    crypto_key = prompt("Please enter HiveMind encryption key", "exactly_16chars");
+    ip = host.split(":")[0]
+    port = host.split(":")[1]
+
     const hivemind_connection = new JarbasHiveMind()
 
     $('.chat[data-chat=person2]').addClass('active-chat')
