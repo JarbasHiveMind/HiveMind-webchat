@@ -11,24 +11,20 @@ This uses tornado to serve the webchat
 
 ## Usage
 
-This uses [HiveMindJs](https://github.com/JarbasHiveMind/HiveMind-js)
+powered by [HiveMindJs](https://github.com/JarbasHiveMind/HiveMind-js)
 
-change hivemind settings at ```hivemind_webchat/static/js/app.js```
+```bash
+usage: __main__.py [-h] [--port PORT] [--announce]
 
-run ```python -m hivemind_webchat```
+Start HiveMind WebChat
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --port PORT  port to run webchat (default 9090)
+  --announce   announce HiveMind node in local network
+```
 
 Access from web browser `http://localhost:9090`
-
-default settings are
-```javascript
-// HiveMind socket
-user = "HivemindWebChat";
-key = "ivf1NQSkQNogWYyr";
-crypto_key = "ivf1NQSkQNogWYyr";
-ip = "127.0.0.1";
-port = 5678;
-hivemind_address = 'ws://' + ip + ":" + port
-```
 
 ## Privacy
 

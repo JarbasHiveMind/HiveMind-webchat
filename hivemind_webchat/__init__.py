@@ -1,12 +1,28 @@
+import asyncio
+import os
+import os.path
+import socket
+import threading
+
 import tornado.httpserver
 import tornado.ioloop
-import tornado.web
-import os.path
-import os
-import tornado.websocket
 import tornado.options
-import threading
-import asyncio
+import tornado.web
+import tornado.websocket
+
+
+def get_ip():
+    # taken from https://stackoverflow.com/a/28950776/13703283
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -34,9 +50,8 @@ class WebChat(threading.Thread):
         ]
 
         settings = {
-            "debug": True,
-            "template_path": os.path.join(os.path.dirname(__file__),
-                                          "templates"),
+            "debug": False,
+            "template_path": os.path.join(os.path.dirname(__file__), "templates"),
             "static_path": os.path.join(os.path.dirname(__file__), "static"),
         }
 
@@ -44,6 +59,7 @@ class WebChat(threading.Thread):
         httpServer = tornado.httpserver.HTTPServer(application)
 
         httpServer.listen(self.port)
+        print(f"Starting WebChat: {get_ip()}:{self.port}")
         tornado.ioloop.IOLoop.instance().start()
 
     def stop(self):
