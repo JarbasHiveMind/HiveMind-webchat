@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='hivemind_webchat',
-    version='0.2.2',
+    version='0.3.0',
     packages=['hivemind_webchat'],
     include_package_data=True,
     install_requires=["tornado"],
@@ -13,7 +13,7 @@ setup(
     description='local hivemind webchat',
     entry_points={
         'console_scripts': [
-            'HiveMind-webchat=hivemind_webchat.__main__:main'
+            'hivemind-webchat=hivemind_webchat.__main__:main'
         ]
     }
 )

@@ -21,7 +21,6 @@ Start HiveMind WebChat
 optional arguments:
   -h, --help   show this help message and exit
   --port PORT  port to run webchat (default 9090)
-  --announce   announce HiveMind node in local network
 ```
 
 Access from web browser `http://localhost:9090`
