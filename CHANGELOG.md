@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/HEAD)
+## [V0.3.1a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.1a2) (2023-08-03)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/ee7736f02289a6b101619b2dc4941a2e8747888b...HEAD)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/ee7736f02289a6b101619b2dc4941a2e8747888b...V0.3.1a2)
 
 **Fixed bugs:**
 
