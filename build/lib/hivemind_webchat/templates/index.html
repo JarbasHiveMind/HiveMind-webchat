@@ -1,0 +1,75 @@
+<!--
+-------------------------------------------------------------
+	Author:	jcasoft	- Juan Carlos Argueta
+	Web Chat Client for Mycroft
+
+	Modified by JarbasAI
+
+-------------------------------------------------------------
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mycroft Web Chat Client</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="static/css/todc-bootstrap.min.css"
+          type="text/css">
+    <link rel="stylesheet" href="static/css/app.css">
+    <link rel="stylesheet" href="static/css/font-awesome.css">
+
+</head>
+
+<body>
+
+
+<div class="mycroft">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="static/img/ovos-logo-512.png" alt="Mycroft Logo">
+            </a>
+        </div>
+
+    </nav>
+</div>
+
+<div class="container">
+    <div class="right">
+        <div class="chat" data-chat="person2">
+        </div>
+        <div style="display: none;" id="writer" class="write">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-xs-11">
+                        <input type="text" name="body" id="textbox" "/>
+                    </div>
+                    <div class="col-xs-1">
+                        <button type="submit" id="textbox_submit" class="btn btn-primary pull-right btn-lg RbtnMargin">
+                            Send&nbsp;<i class="fa fa-volume-up"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="static/js/jquery-3.2.1.min.js"></script>
+<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/asmcrypto.js"></script>
+<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/webcrypto-shim.js"></script>
+<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/hivemind.js"></script>
+<script src="static/js/app.js"></script>
+<script type="text/javascript">
+    document.getElementById('writer').style.display = 'block';
+</script>
+
+</body>
+
+</html>
