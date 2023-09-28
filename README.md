@@ -4,10 +4,11 @@
 
 Mycroft Webchat Terminal - Connecting to the HiveMind with [javascript](https://github.com/JarbasHiveMind/HiveMind-js) reference implementation
 
-This uses tornado to serve the webchat
+You can find a online demo [here](https://jarbashivemind.github.io/HiveMind-webchat)
 
 ![](./webchat.png)
 
+This repo uses tornado to serve the webchat, see gh-pages branch for the static page served in the demo
 
 ## Usage
 
