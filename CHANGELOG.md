@@ -1,5 +1,9 @@
 # Changelog
 
+## [V0.3.2a3](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.2a3) (2024-03-14)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.2a2...V0.3.2a3)
+
 ## [V0.3.2a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.2a2) (2024-03-14)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.2a1...V0.3.2a2)
