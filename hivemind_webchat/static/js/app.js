@@ -17,15 +17,35 @@ var crypto_key = null;
 
 
 $(document).ready(function () {
-    // prompt user for hivemind creds
-    // TODO a nice modal
-    let host = prompt("Please enter HiveMind host (wss not supported!)", "0.0.0.0:5678");
-    key = prompt("Please enter HiveMind access key", "your_access_key");
-    crypto_key = prompt("Please enter HiveMind encryption key", "exactly_16chars");
-    ip = host.split(":")[0]
-    port = host.split(":")[1]
-
+	
     const hivemind_connection = new JarbasHiveMind()
+	
+    // Function to open modal when the button is clicked
+    $('#openModalBtn').click(function () {
+        $('#credentialsModal').modal('show');
+    });
+
+    // Function to handle form submission
+    $('#credentialsForm').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Retrieve input values
+        var host = $('#host').val();
+        var accessKey = $('#accessKey').val();
+        var encryptionKey = $('#encryptionKey').val();
+        let ip = host.split(":")[0]
+        let port = host.split(":")[1]
+	    
+        try {
+            hivemind_connection.connect(ip, port, user, accessKey, encryptionKey);
+        } catch (error) {
+            console.error("Error connecting to HiveMind:", error);
+        }
+	    
+        // Close the modal
+        $('#credentialsModal').modal('hide');
+    });
+	
 
     $('.chat[data-chat=person2]').addClass('active-chat')
     $('.person[data-chat=person2]').addClass('active')
@@ -82,5 +102,5 @@ $(document).ready(function () {
         return false
     })
 
-    hivemind_connection.connect(ip, port, user, key, crypto_key);
+   
 });
