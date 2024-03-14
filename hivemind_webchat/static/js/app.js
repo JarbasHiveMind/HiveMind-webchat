@@ -9,19 +9,16 @@
 
 */
 // HiveMind socket
-const user = "HivemindWebChatV0.2";
-var key = "DEMO";
-var ip = "0.0.0.0";
-var port = 5678;
-var crypto_key = null;
+const user = "HivemindWebChatV0.3";
 
 
 $(document).ready(function () {
 	
     const hivemind_connection = new JarbasHiveMind()
+    $('#connectBtn').addClass('btn-danger')
 	
     // Function to open modal when the button is clicked
-    $('#openModalBtn').click(function () {
+    $('#connectBtn').click(function () {
         $('#credentialsModal').modal('show');
     });
 
@@ -30,16 +27,16 @@ $(document).ready(function () {
         event.preventDefault(); // Prevent default form submission behavior
 
         // Retrieve input values
-        var host = $('#host').val();
         var accessKey = $('#accessKey').val();
         var encryptionKey = $('#encryptionKey').val();
-        let ip = host.split(":")[0]
-        let port = host.split(":")[1]
+        let ip = $('#ip').val();
+        let port = $('#port').val();
 	    
         try {
             hivemind_connection.connect(ip, port, user, accessKey, encryptionKey);
         } catch (error) {
             console.error("Error connecting to HiveMind:", error);
+            push_response("Error connecting to HiveMind: " + error)
         }
 	    
         // Close the modal
@@ -73,11 +70,13 @@ $(document).ready(function () {
 
     hivemind_connection.onHiveConnected = function () {
         push_response("Welcome to the HiveMind Webchat client!")
+        $('#connectBtn').removeClass('btn-danger').addClass('btn-success').text('Connected');
     };
 
     hivemind_connection.onMycroftSpeak = function (mycroft_message) {
         let utterance = mycroft_message.data.utterance;
         push_response(utterance)
+        $('#connectBtn').removeClass('btn-success').addClass('btn-danger').text('Disconnected');
     }
 
     hivemind_connection.onHiveDisconnected = function () {
