@@ -27,11 +27,10 @@ $(document).ready(function () {
         event.preventDefault(); // Prevent default form submission behavior
 
         // Retrieve input values
-        var host = $('#host').val();
         var accessKey = $('#accessKey').val();
         var encryptionKey = $('#encryptionKey').val();
-        let ip = host.split(":")[0]
-        let port = host.split(":")[1]
+        let ip = $('#ip').val();
+        let port = $('#port').val();
 	    
         try {
             hivemind_connection.connect(ip, port, user, accessKey, encryptionKey);
