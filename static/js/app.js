@@ -9,11 +9,7 @@
 
 */
 // HiveMind socket
-const user = "HivemindWebChatV0.2";
-var key = "DEMO";
-var ip = "0.0.0.0";
-var port = 5678;
-var crypto_key = null;
+const user = "HivemindWebChatV0.3";
 
 
 $(document).ready(function () {
@@ -73,11 +69,13 @@ $(document).ready(function () {
 
     hivemind_connection.onHiveConnected = function () {
         push_response("Welcome to the HiveMind Webchat client!")
+        $('#connectBtn').removeClass('btn-danger').addClass('btn-success').text('Connected');
     };
 
     hivemind_connection.onMycroftSpeak = function (mycroft_message) {
         let utterance = mycroft_message.data.utterance;
         push_response(utterance)
+        $('#connectBtn').removeClass('btn-success').addClass('btn-danger').text('Disconnected');
     }
 
     hivemind_connection.onHiveDisconnected = function () {
