@@ -15,6 +15,7 @@ const user = "HivemindWebChatV0.3";
 $(document).ready(function () {
 	
     const hivemind_connection = new JarbasHiveMind()
+    $('#connectBtn').addClass('btn-danger')
 	
     // Function to open modal when the button is clicked
     $('#connectBtn').click(function () {
@@ -36,6 +37,7 @@ $(document).ready(function () {
             hivemind_connection.connect(ip, port, user, accessKey, encryptionKey);
         } catch (error) {
             console.error("Error connecting to HiveMind:", error);
+            push_response("Error connecting to HiveMind: " + error)
         }
 	    
         // Close the modal
