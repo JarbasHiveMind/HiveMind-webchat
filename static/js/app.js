@@ -17,7 +17,7 @@ $(document).ready(function () {
     const hivemind_connection = new JarbasHiveMind()
 	
     // Function to open modal when the button is clicked
-    $('#openModalBtn').click(function () {
+    $('#connectBtn').click(function () {
         $('#credentialsModal').modal('show');
     });
 
