@@ -1,4 +1,6 @@
-mycroft-lib[bus]==2021.4.2a13
-mycroft-lib[skills]==2021.4.2a13
-mycroft-lib[lingua_franca]==2021.4.2a13
-jarbas_hive_mind==0.10.7
+# The webchat UI + optional headless bridge.
+# The hub itself (hivemind-core) and the skills/agent (ovos-core) run as
+# separate services; install and run them independently.
+hivemind_webchat
+hivemind-bus-client>=0.9.0,<1.0.0
+ovos-utils

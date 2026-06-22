@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hivemind_webchat"
+description = "Web-chat client for HiveMind — serves a browser chat UI that talks to a HiveMind hub"
+readme = "README.md"
+authors = [{ name = "jarbasAI", email = "jarbasai@mailfence.com" }]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/JarbasHiveMind/HiveMind-webchat"
+
+[project.scripts]
+hivemind-webchat = "hivemind_webchat.__main__:main"
+
+[tool.setuptools]
+packages = ["hivemind_webchat"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { attr = "hivemind_webchat.version.__version__" }
+dependencies = { file = ["requirements.txt"] }

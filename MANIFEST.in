@@ -1,1 +1,3 @@
-recursive-include hivemind_webchat *
+include requirements.txt
+recursive-include hivemind_webchat/static *
+recursive-include hivemind_webchat/templates *
