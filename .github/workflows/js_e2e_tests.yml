@@ -27,12 +27,15 @@ jobs:
 
       - name: Install Python hub deps
         # Prerelease floors so a plain `pip install` (no --pre, no git branch)
-        # resolves the 2.x stack: hivescope>=0.5.1a1 carries the loopback +
-        # get_client_by_id fixes (hivescope#26) the hub fixture relies on, and
-        # the bus-client floor keeps the whole stack on the 2.x prerelease line.
+        # resolves the whole 2.x stack consistently. hivescope>=0.5.1a1 carries
+        # the loopback + get_client_by_id fixes (hivescope#26) the hub fixture
+        # relies on; hivemind-core>=4.6.7a1 and hivemind-bus-client>=0.9.2a1 are
+        # the 2.x line (both on ovos_bus_client>=2.0.0a3). Flooring all three
+        # avoids the stable hivemind-core 4.0.0, whose old bus-client pin
+        # conflicts with the prerelease bus-client (ResolutionImpossible).
         run: |
           python -m pip install --upgrade pip
-          pip install "hivescope>=0.5.1a1" "hivemind-bus-client>=0.9.2a1" hivemind-core
+          pip install "hivescope>=0.5.1a1" "hivemind-bus-client>=0.9.2a1" "hivemind-core>=4.6.7a1"
 
       - name: Install Node deps
         run: npm install
