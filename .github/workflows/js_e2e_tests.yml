@@ -26,9 +26,13 @@ jobs:
           node-version: '22'
 
       - name: Install Python hub deps
+        # Prerelease floors so a plain `pip install` (no --pre, no git branch)
+        # resolves the 2.x stack: hivescope>=0.5.1a1 carries the loopback +
+        # get_client_by_id fixes (hivescope#26) the hub fixture relies on, and
+        # the bus-client floor keeps the whole stack on the 2.x prerelease line.
         run: |
           python -m pip install --upgrade pip
-          pip install hivescope hivemind-core
+          pip install "hivescope>=0.5.1a1" "hivemind-bus-client>=0.9.2a1" hivemind-core
 
       - name: Install Node deps
         run: npm install
