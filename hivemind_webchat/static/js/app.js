@@ -8,8 +8,8 @@
 -------------------------------------------------------------
 
 */
-// HiveMind socket
-const user = "HivemindWebChatV0.3";
+// HiveMind socket (Protocol V1 client — see HiveMind-js)
+const user = "HivemindWebChat";
 
 
 $(document).ready(function () {
@@ -28,12 +28,13 @@ $(document).ready(function () {
 
         // Retrieve input values
         var accessKey = $('#accessKey').val();
-        var encryptionKey = $('#encryptionKey').val();
+        // V1: the shared password drives the PBKDF2 handshake / AES-GCM session key
+        var password = $('#password').val();
         let ip = $('#ip').val();
         let port = $('#port').val();
-	    
+
         try {
-            hivemind_connection.connect(ip, port, user, accessKey, encryptionKey);
+            hivemind_connection.connect(ip, port, user, accessKey, password);
         } catch (error) {
             console.error("Error connecting to HiveMind:", error);
             push_response("Error connecting to HiveMind: " + error)
@@ -76,7 +77,6 @@ $(document).ready(function () {
     hivemind_connection.onMycroftSpeak = function (mycroft_message) {
         let utterance = mycroft_message.data.utterance;
         push_response(utterance)
-        $('#connectBtn').removeClass('btn-success').addClass('btn-danger').text('Disconnected');
     }
 
     hivemind_connection.onHiveDisconnected = function () {

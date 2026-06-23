@@ -71,10 +71,16 @@ Open `http://localhost:9090`, fill in the connection form, and click
 | Host / IP | the hub's address (e.g. `127.0.0.1`) |
 | Port | the hub's HiveMind port (default `5678`) |
 | Access Key | the key from `hivemind-core add-client` |
-| Encryption Key | the password / crypto key for that client |
+| Password | the shared password for that client |
 
 Once the handshake completes, type a message and it is sent to the hub as a
 `recognizer_loop:utterance`; spoken replies are rendered back in the chat log.
+
+The browser speaks **HiveMind Protocol V1**: the password drives a
+PBKDF2-HMAC-SHA256 handshake that derives an AES-GCM session key, so all traffic
+after the handshake is encrypted end to end. This runs entirely in the browser
+via [HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js) using native
+Web Crypto — no crypto polyfills are loaded.
 
 ## Command-line options
 
@@ -93,10 +99,24 @@ options:
 - `hivemind_webchat.WebChat` is a `threading.Thread` wrapping a Tornado
   `HTTPServer`. It serves `templates/index.html` at `/` and the chat assets
   under `/static`.
-- `index.html` loads HiveMind-js and `app.js` wires the connection form to
-  `JarbasHiveMind.connect(host, port, user, accessKey, encryptionKey)`.
-- All HiveMind traffic (handshake, encryption, message routing) happens in the
-  browser inside HiveMind-js — the Python side never touches the hub.
+- `index.html` loads the HiveMind-js V1 client from jsDelivr and `app.js` wires
+  the connection form to
+  `JarbasHiveMind.connect(host, port, user, accessKey, password)`.
+- All HiveMind traffic (V1 handshake, encryption, message routing) happens in
+  the browser inside HiveMind-js — the Python side never touches the hub.
+
+## Tests
+
+`tests/test_smoke.py` covers the Python web server and the optional headless
+bridge. `tests/e2e.mjs` is a Node end-to-end test that loads the exact
+HiveMind-js client the page ships, connects to a real loopback hivemind-core
+hub (`tests/hub_fixture.py`), performs the V1 handshake, and verifies the hub
+decrypts and receives an encrypted utterance:
+
+```bash
+npm install   # ws
+npm test      # node tests/e2e.mjs  (needs python with hivescope + hivemind-core)
+```
 
 ## Security
 
