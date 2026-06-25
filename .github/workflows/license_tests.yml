@@ -9,4 +9,8 @@ jobs:
   license_check:
     uses: OpenVoiceOS/gh-automations/.github/workflows/license-check.yml@dev
     with:
+      # The package itself ships under Apache-2.0; exclude the HiveMind/OVOS
+      # first-party packages (and tqdm, matched name-anchored) from the
+      # downstream-licence audit to avoid self-flagging.
+      exclude_packages: '(?i)^(hivemind|hivescope|ovos|z85base91|poorman|filelock|tqdm).*'
       warn_only: true

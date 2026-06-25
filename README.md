@@ -22,6 +22,14 @@ page at a running hub and enter the access key that hub issued you.
 browser (this page + HiveMind-js)  ──websocket──►  hivemind-core hub  ──►  OVOS / agent
 ```
 
+## Documentation
+
+Full docs live under [`docs/`](docs/index.md): [getting started](docs/getting-started.md),
+[configuration](docs/configuration.md), [architecture](docs/architecture.md)
+(Python backend + JS frontend + the headless bridge), [deployment](docs/deployment.md),
+[dependencies](docs/dependencies.md), [testing](docs/testing.md), and
+[troubleshooting](docs/troubleshooting.md).
+
 ## Install
 
 ```bash
@@ -36,7 +44,11 @@ cd HiveMind-webchat
 pip install .
 ```
 
-The only runtime dependency is `tornado`.
+The HTTP server only needs `tornado`; `hivemind-bus-client` (2.x) and
+`ovos-utils` are pulled in for the optional headless bridge. Dependency policy
+lives entirely in `pyproject.toml` (no `requirements.txt` / `setup.py` /
+`MANIFEST.in`); the bus-client 2.x stack resolves from prerelease **min-version
+pins** with no `--pre`. See [docs/dependencies.md](docs/dependencies.md).
 
 ## Quickstart
 
@@ -107,16 +119,31 @@ options:
 
 ## Tests
 
-`tests/test_smoke.py` covers the Python web server and the optional headless
-bridge. `tests/e2e.mjs` is a Node end-to-end test that loads the exact
-HiveMind-js client the page ships, connects to a real loopback hivemind-core
-hub (`tests/hub_fixture.py`), performs the V1 handshake, and verifies the hub
+WebChat is a Python + JavaScript hybrid, so it has two test suites.
+
+**Python** (`tests/`): `tests/test_smoke.py` covers the Tornado server + the
+bridge construction; `tests/e2e/` boots a real loopback `hivemind-core` hub via
+[hivescope](https://github.com/JarbasHiveMind/hivescope) and drives the **real**
+`WebchatBridge` over a **real** `HiveMessageBusClient` — a chat message goes to
+the hub and a `speak` reply is routed back. Only the browser/websocket frontend
+is mocked. No `importorskip`/`skipif`.
+
+```bash
+uv pip install -e ".[e2e]"
+pytest tests/
+```
+
+**JavaScript** (`tests/e2e.mjs`): a Node end-to-end test that loads the exact
+HiveMind-js V1 client the page ships, connects to a real loopback hub
+(`tests/hub_fixture.py`), performs the V1 handshake, and verifies the hub
 decrypts and receives an encrypted utterance:
 
 ```bash
 npm install   # ws
-npm test      # node tests/e2e.mjs  (needs python with hivescope + hivemind-core)
+npm test      # node tests/e2e.mjs  (needs python with the [e2e] stack)
 ```
+
+Full details in [docs/testing.md](docs/testing.md).
 
 ## Security
 
