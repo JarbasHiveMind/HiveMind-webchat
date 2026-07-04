@@ -90,29 +90,35 @@ Once the handshake completes, type a message and it is sent to the hub as a
 
 The browser negotiates the highest HiveMind protocol version both peers support
 (WIRE-1): against a **protocol v3** hub it runs the Noise handshake over the
-AES-GCM suite, and against older hubs it falls back to the legacy **v1** password
+default `Noise_XXpsk2_25519_ChaChaPoly_SHA256` suite — full cipher parity with
+hivemind-core — and against older hubs it falls back to the legacy **v1** password
 handshake (PBKDF2-HMAC-SHA256 key derivation + AES-GCM). Either way, all traffic
 after the handshake is encrypted end to end, entirely in the browser via
-[HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js) using native Web
-Crypto — no crypto polyfills are loaded.
+[HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js), which pairs native
+Web Crypto with the pure-JS `@noble/ciphers` + `@noble/hashes` bundle for the two
+primitives Web Crypto lacks (ChaCha20-Poly1305 and argon2id).
 
-### Protocol v3 (Noise) and the argon2id limitation
+### Protocol v3 (Noise)
 
-Browsers use the AES-GCM Noise suite (`25519_AESGCM_SHA256`) — Web Crypto has no
-ChaChaPoly. A v3 hub advertises this suite (shipped in hivemind-bus-client
-0.10.1a1 / hivemind-core 4.7.0a1), so a browser peer can negotiate v3. The catch
-is the PSK:
+Against a v3 hub (hivemind-bus-client 0.10.1a1 / hivemind-core 4.7.0a1 or newer)
+the browser negotiates the **default** ChaChaPoly suite and derives the PSK as
+`argon2id(password, SHA-256(node_id))` **in-browser** — byte-for-byte identical to
+hivemind-core. So the **Password** field alone is enough:
 
-- If the hub uses the **PBKDF2** PSK KDF, the **Password** field alone is enough —
-  the client derives the PSK in-browser.
-- Against the **default argon2id** hub, Web Crypto cannot compute argon2id, so
-  paste a **provisioned PSK** (64 hex chars, equal to
-  `argon2id(password, SHA-256(node_id))` computed on a capable host) into the
-  *Protocol v3* section of the connect dialog. An optional **server key pin**
+- **Password (default):** the client stretches it with argon2id on-device to the
+  Noise PSK. No server-side KDF change and no provisioning required.
+- **Provisioned PSK (optional):** paste a 64-hex-char PSK (equal to
+  `argon2id(password, SHA-256(node_id))`) into the *Protocol v3* section of the
+  connect dialog to skip on-device derivation. An optional **server key pin**
   enables KKpsk0 TOFU pinning.
+- **PBKDF2 (fallback):** if a hub explicitly advertises the PBKDF2 PSK KDF, the
+  client derives the PSK with PBKDF2 from the password instead.
 
-If no PSK is available for a v3 hub, the client warns and falls back to the legacy
-v1 handshake, so the UX keeps working against every hub.
+The one caveat: a **minimal** page bundle shipped *without* the `@noble` primitives
+degrades to the Web-Crypto-only AES-GCM (`25519_AESGCM_SHA256`) + PBKDF2 subset,
+and then needs a provisioned PSK or a PBKDF2-advertising hub. If no PSK is
+available for a v3 hub at all, the client warns and falls back to the legacy v1
+handshake, so the UX keeps working against every hub.
 
 ## Command-line options
 

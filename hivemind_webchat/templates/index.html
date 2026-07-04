@@ -72,10 +72,14 @@
                         <details>
                             <summary>Protocol v3 (Noise) — optional</summary>
                             <small class="text-muted">
-                                The password alone negotiates v3 against a hub
-                                configured with the PBKDF2 PSK KDF. Against the
-                                default argon2id hub, paste a provisioned 64-hex
-                                PSK below. Leave blank for the legacy v1 handshake.
+                                Against a v3 hub the client uses the default
+                                ChaCha20-Poly1305 Noise suite and derives the PSK
+                                from the password above with argon2id in-browser —
+                                full parity with hivemind-core, so the password
+                                alone is enough with no server-side configuration.
+                                These fields are optional: paste a provisioned
+                                64-hex PSK to skip derivation, and/or a server key
+                                pin for TOFU pinning. Leave blank to use the password.
                             </small>
                             <div class="form-group">
                                 <label for="psk">Provisioned PSK (64 hex):</label>
