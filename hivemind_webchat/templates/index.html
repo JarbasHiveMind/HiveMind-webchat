@@ -13,7 +13,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Mycroft Web Chat Client</title>
+    <title>HiveMind Web Chat Client</title>
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,16 +30,53 @@
 <body>
 
 
-<div class="mycroft">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#"><img src="static/img/ovos-logo-512.png" alt="Mycroft Logo">
-            </a>
+    <div class="mycroft">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img src="static/img/ovos-logo-512.png" alt="Mycroft Logo">
+                </a>
+            </div>
+            <!-- Button to open modal -->
+	    <button id="connectBtn" class="btn btn-primary" style="margin-left: auto; margin-right: auto;">Connect to HiveMind</button>
+        </nav>
+    </div>
+
+    <!-- Modal -->
+    <div id="credentialsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Enter HiveMind Credentials</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Form to enter credentials -->
+                    <form id="credentialsForm">
+                        <div class="form-group">
+                            <label for="ip">IP:</label>
+                            <input type="text" class="form-control" id="ip" placeholder="127.0.0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Port:</label>
+                            <input type="text" class="form-control" id="port" placeholder="5678">
+                        </div>
+                        <div class="form-group">
+                            <label for="accessKey">Access Key:</label>
+                            <input type="text" class="form-control" id="accessKey" placeholder="Enter access key">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
         </div>
+    </div>
 
-    </nav>
-</div>
-
+	
 <div class="container">
     <div class="right">
         <div class="chat" data-chat="person2">
@@ -61,10 +98,14 @@
 </div>
 
 
-<script src="static/js/jquery-3.2.1.min.js"></script>
-<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/asmcrypto.js"></script>
-<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/webcrypto-shim.js"></script>
-<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/hivemind.js"></script>
+<!-- Include jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Include Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- HiveMind Protocol V1 client (native Web Crypto, no shims required) -->
+<script src="https://cdn.jsdelivr.net/gh/JarbasHiveMind/HiveMind-js@dev/static/js/hivemind.js"></script>
 <script src="static/js/app.js"></script>
 <script type="text/javascript">
     document.getElementById('writer').style.display = 'block';

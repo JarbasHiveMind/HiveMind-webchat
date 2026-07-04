@@ -8,24 +8,42 @@
 -------------------------------------------------------------
 
 */
-// HiveMind socket
-const user = "HivemindWebChatV0.2";
-var key = "DEMO";
-var ip = "0.0.0.0";
-var port = 5678;
-var crypto_key = null;
+// HiveMind socket (Protocol V1 client — see HiveMind-js)
+const user = "HivemindWebChat";
 
 
 $(document).ready(function () {
-    // prompt user for hivemind creds
-    // TODO a nice modal
-    let host = prompt("Please enter HiveMind host (wss not supported!)", "0.0.0.0:5678");
-    key = prompt("Please enter HiveMind access key", "your_access_key");
-    crypto_key = prompt("Please enter HiveMind encryption key", "exactly_16chars");
-    ip = host.split(":")[0]
-    port = host.split(":")[1]
-
+	
     const hivemind_connection = new JarbasHiveMind()
+    $('#connectBtn').addClass('btn-danger')
+	
+    // Function to open modal when the button is clicked
+    $('#connectBtn').click(function () {
+        $('#credentialsModal').modal('show');
+    });
+
+    // Function to handle form submission
+    $('#credentialsForm').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Retrieve input values
+        var accessKey = $('#accessKey').val();
+        // V1: the shared password drives the PBKDF2 handshake / AES-GCM session key
+        var password = $('#password').val();
+        let ip = $('#ip').val();
+        let port = $('#port').val();
+
+        try {
+            hivemind_connection.connect(ip, port, user, accessKey, password);
+        } catch (error) {
+            console.error("Error connecting to HiveMind:", error);
+            push_response("Error connecting to HiveMind: " + error)
+        }
+	    
+        // Close the modal
+        $('#credentialsModal').modal('hide');
+    });
+	
 
     $('.chat[data-chat=person2]').addClass('active-chat')
     $('.person[data-chat=person2]').addClass('active')
@@ -53,6 +71,7 @@ $(document).ready(function () {
 
     hivemind_connection.onHiveConnected = function () {
         push_response("Welcome to the HiveMind Webchat client!")
+        $('#connectBtn').removeClass('btn-danger').addClass('btn-success').text('Connected');
     };
 
     hivemind_connection.onMycroftSpeak = function (mycroft_message) {
@@ -82,5 +101,5 @@ $(document).ready(function () {
         return false
     })
 
-    hivemind_connection.connect(ip, port, user, key, crypto_key);
+   
 });

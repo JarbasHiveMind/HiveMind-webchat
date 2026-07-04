@@ -1,0 +1,15 @@
+{
+  "name": "hivemind-webchat-frontend",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Browser frontend tooling + e2e test for HiveMind WebChat. The page loads the HiveMind-js V1 client from CDN; this manifest only drives the Node end-to-end test.",
+  "license": "Apache-2.0",
+  "author": "JarbasAi <jarbasai@mailfence.com>",
+  "scripts": {
+    "fetch-client": "node tests/fetch_client.mjs",
+    "test": "node tests/e2e.mjs"
+  },
+  "devDependencies": {
+    "ws": "^8.18.0"
+  }
+}

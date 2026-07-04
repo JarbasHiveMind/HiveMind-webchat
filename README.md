@@ -1,38 +1,168 @@
-# HiveMind - Local WebChat
+# HiveMind WebChat
 
 ![logo](./javascript.png)
 
-Mycroft Webchat Terminal - Connecting to the HiveMind with [javascript](https://github.com/JarbasHiveMind/HiveMind-js) reference implementation
+A browser-based WebChat terminal for [HiveMind](https://github.com/JarbasHiveMind/HiveMind-core).
+It serves a small chat page from a local web server; the page connects to a
+HiveMind hub as a satellite using the [HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js)
+client, so you can talk to your voice assistant from any browser on the network.
 
-This uses tornado to serve the webchat
+![webchat](./webchat.png)
 
-![](./webchat.png)
+## Where it sits
 
+HiveMind is a mesh: satellite devices connect to a central
+[hivemind-core](https://github.com/JarbasHiveMind/HiveMind-core) hub over an
+authenticated, encrypted protocol. WebChat is one such satellite — a text
+front end. The Python package here is only a static web server (Tornado); the
+actual HiveMind connection runs in the browser via HiveMind-js. You point the
+page at a running hub and enter the access key that hub issued you.
 
-## Usage
+```
+browser (this page + HiveMind-js)  ──websocket──►  hivemind-core hub  ──►  OVOS / agent
+```
 
-powered by [HiveMindJs](https://github.com/JarbasHiveMind/HiveMind-js)
+## Documentation
+
+Full docs live under [`docs/`](docs/index.md): [getting started](docs/getting-started.md),
+[configuration](docs/configuration.md), [architecture](docs/architecture.md)
+(Python backend + JS frontend + the headless bridge), [deployment](docs/deployment.md),
+[dependencies](docs/dependencies.md), [testing](docs/testing.md), and
+[troubleshooting](docs/troubleshooting.md).
+
+## Install
 
 ```bash
-usage: __main__.py [-h] [--port PORT] [--announce]
+pip install hivemind-webchat
+```
+
+Or from source:
+
+```bash
+git clone https://github.com/JarbasHiveMind/HiveMind-webchat
+cd HiveMind-webchat
+pip install .
+```
+
+The HTTP server only needs `tornado`; `hivemind-bus-client` (2.x) and
+`ovos-utils` are pulled in for the optional headless bridge. Dependency policy
+lives entirely in `pyproject.toml` (no `requirements.txt` / `setup.py` /
+`MANIFEST.in`); the bus-client 2.x stack resolves from prerelease **min-version
+pins** with no `--pre`. See [docs/dependencies.md](docs/dependencies.md).
+
+## Quickstart
+
+### 1. Run a hub and issue an access key
+
+On the machine that will host the assistant, install and run
+[hivemind-core](https://github.com/JarbasHiveMind/HiveMind-core), then add a
+client for the webchat:
+
+```bash
+hivemind-core add-client
+# note the printed access key and password/encryption key
+hivemind-core listen --port 5678
+```
+
+### 2. Start the WebChat server
+
+```bash
+hivemind-webchat --port 9090
+```
+
+This serves the chat page at `http://localhost:9090`. The port here is the web
+server's HTTP port, not the hub port.
+
+### 3. Connect from the browser
+
+Open `http://localhost:9090`, fill in the connection form, and click
+**Connect to HiveMind**:
+
+| Field | Value |
+|-------|-------|
+| Host / IP | the hub's address (e.g. `127.0.0.1`) |
+| Port | the hub's HiveMind port (default `5678`) |
+| Access Key | the key from `hivemind-core add-client` |
+| Password | the shared password for that client |
+
+Once the handshake completes, type a message and it is sent to the hub as a
+`recognizer_loop:utterance`; spoken replies are rendered back in the chat log.
+
+The browser speaks **HiveMind Protocol V1**: the password drives a
+PBKDF2-HMAC-SHA256 handshake that derives an AES-GCM session key, so all traffic
+after the handshake is encrypted end to end. This runs entirely in the browser
+via [HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js) using native
+Web Crypto — no crypto polyfills are loaded.
+
+## Command-line options
+
+```
+usage: hivemind-webchat [-h] [--port PORT]
 
 Start HiveMind WebChat
 
-optional arguments:
+options:
   -h, --help   show this help message and exit
-  --port PORT  port to run webchat (default 9090)
+  --port PORT  HTTP port to serve the webchat on (default 9090)
 ```
 
-Access from web browser `http://localhost:9090`
+## How it works
 
-## Privacy
+- `hivemind_webchat.WebChat` is a `threading.Thread` wrapping a Tornado
+  `HTTPServer`. It serves `templates/index.html` at `/` and the chat assets
+  under `/static`.
+- `index.html` loads the HiveMind-js V1 client from jsDelivr and `app.js` wires
+  the connection form to
+  `JarbasHiveMind.connect(host, port, user, accessKey, password)`.
+- All HiveMind traffic (V1 handshake, encryption, message routing) happens in
+  the browser inside HiveMind-js — the Python side never touches the hub.
 
-Securing tornado is out of scope for this repo, it is currently served by HTTP, you probably want to set up nginx or equivalent with [let's encrypt](https://letsencrypt.org/) certificates
+## Tests
 
-Hivemind Encryption is supported
+WebChat is a Python + JavaScript hybrid, so it has two test suites.
+
+**Python** (`tests/`): `tests/test_smoke.py` covers the Tornado server + the
+bridge construction; `tests/e2e/` boots a real loopback `hivemind-core` hub via
+[hivescope](https://github.com/JarbasHiveMind/hivescope) and drives the **real**
+`WebchatBridge` over a **real** `HiveMessageBusClient` — a chat message goes to
+the hub and a `speak` reply is routed back. Only the browser/websocket frontend
+is mocked. No `importorskip`/`skipif`.
+
+```bash
+uv pip install -e ".[e2e]"
+pytest tests/
+```
+
+**JavaScript** (`tests/e2e.mjs`): a Node end-to-end test that loads the exact
+HiveMind-js V1 client the page ships, connects to a real loopback hub
+(`tests/hub_fixture.py`), performs the V1 handshake, and verifies the hub
+decrypts and receives an encrypted utterance:
+
+```bash
+npm install   # ws
+npm test      # node tests/e2e.mjs  (needs python with the [e2e] stack)
+```
+
+Full details in [docs/testing.md](docs/testing.md).
+
+## Security
+
+The Tornado server is plain HTTP and out of scope for hardening here. For any
+non-local exposure, put it behind a reverse proxy (nginx, Caddy) with TLS, for
+example via [Let's Encrypt](https://letsencrypt.org/). The HiveMind connection
+itself is always encrypted end to end between the browser and the hub,
+independent of how this page is served.
+
+## Online demo
+
+A static build is published from the `gh-pages` branch:
+<https://jarbashivemind.github.io/HiveMind-webchat>. It is the same page served
+by this server, pointed at whatever hub you enter.
 
 ## Credits
 
-Original Webchat UI: [jcasoft](https://github.com/jcasoft/external-services)
+Original WebChat UI: [jcasoft](https://github.com/jcasoft/external-services).
 
+## License
 
+Apache 2.0 — see [LICENSE](./LICENSE).
