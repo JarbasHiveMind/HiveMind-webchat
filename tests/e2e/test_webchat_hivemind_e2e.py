@@ -41,7 +41,9 @@ from hivemind_webchat.bridge import WebchatBridge
 pytestmark = pytest.mark.timeout(60)
 
 SAT_KEY = "webchat-sat"
-SAT_PASSWORD = "webchat-pass"
+# High-entropy passphrase: poorman_handshake now enforces a strength floor
+# (>=40 bits) at handshake, so the loopback satellite needs a real passphrase.
+SAT_PASSWORD = "webchat-e2e-correct-horse-battery-staple-9f3a71"
 
 
 # ---------------------------------------------------------------------------
