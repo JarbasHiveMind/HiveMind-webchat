@@ -69,6 +69,23 @@
                             <label for="password">Password:</label>
                             <input type="password" class="form-control" id="password" placeholder="Enter password">
                         </div>
+                        <details>
+                            <summary>Protocol v3 (Noise) — optional</summary>
+                            <small class="text-muted">
+                                The password alone negotiates v3 against a hub
+                                configured with the PBKDF2 PSK KDF. Against the
+                                default argon2id hub, paste a provisioned 64-hex
+                                PSK below. Leave blank for the legacy v1 handshake.
+                            </small>
+                            <div class="form-group">
+                                <label for="psk">Provisioned PSK (64 hex):</label>
+                                <input type="text" class="form-control" id="psk" placeholder="optional Noise PSK">
+                            </div>
+                            <div class="form-group">
+                                <label for="serverKey">Server key pin (64 hex):</label>
+                                <input type="text" class="form-control" id="serverKey" placeholder="optional TOFU pin">
+                            </div>
+                        </details>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>

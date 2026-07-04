@@ -8,7 +8,9 @@
 -------------------------------------------------------------
 
 */
-// HiveMind socket (Protocol V1 client — see HiveMind-js)
+// HiveMind socket (hivemind-js client — see HiveMind-js). The client negotiates
+// the highest protocol version both peers support: v3 (Noise/AES-GCM) where the
+// hub offers it, else the legacy v1 password handshake.
 const user = "HivemindWebChat";
 
 
@@ -28,13 +30,25 @@ $(document).ready(function () {
 
         // Retrieve input values
         var accessKey = $('#accessKey').val();
-        // V1: the shared password drives the PBKDF2 handshake / AES-GCM session key
+        // The shared password drives the legacy v1 PBKDF2 handshake / AES-GCM
+        // session key, and — against a v3 hub advertising the PBKDF2 PSK KDF —
+        // the Noise PSK too.
         var password = $('#password').val();
         let ip = $('#ip').val();
         let port = $('#port').val();
 
+        // Optional protocol-v3 (Noise) options. Empty fields keep the client on
+        // the password path (v3 via PBKDF2 KDF, or legacy v1 fallback). Against
+        // the default argon2id hub a provisioned PSK is required — Web Crypto has
+        // no argon2id.
+        let options = {};
+        let psk = ($('#psk').val() || '').trim();
+        if (psk) options.psk = psk;
+        let serverKey = ($('#serverKey').val() || '').trim();
+        if (serverKey) options.serverNoiseKey = serverKey;
+
         try {
-            hivemind_connection.connect(ip, port, user, accessKey, password);
+            hivemind_connection.connect(ip, port, user, accessKey, password, options);
         } catch (error) {
             console.error("Error connecting to HiveMind:", error);
             push_response("Error connecting to HiveMind: " + error)

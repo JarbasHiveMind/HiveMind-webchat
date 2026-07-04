@@ -88,11 +88,31 @@ Open `http://localhost:9090`, fill in the connection form, and click
 Once the handshake completes, type a message and it is sent to the hub as a
 `recognizer_loop:utterance`; spoken replies are rendered back in the chat log.
 
-The browser speaks **HiveMind Protocol V1**: the password drives a
-PBKDF2-HMAC-SHA256 handshake that derives an AES-GCM session key, so all traffic
-after the handshake is encrypted end to end. This runs entirely in the browser
-via [HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js) using native
-Web Crypto — no crypto polyfills are loaded.
+The browser negotiates the highest HiveMind protocol version both peers support
+(WIRE-1): against a **protocol v3** hub it runs the Noise handshake over the
+AES-GCM suite, and against older hubs it falls back to the legacy **v1** password
+handshake (PBKDF2-HMAC-SHA256 key derivation + AES-GCM). Either way, all traffic
+after the handshake is encrypted end to end, entirely in the browser via
+[HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js) using native Web
+Crypto — no crypto polyfills are loaded.
+
+### Protocol v3 (Noise) and the argon2id limitation
+
+Browsers use the AES-GCM Noise suite (`25519_AESGCM_SHA256`) — Web Crypto has no
+ChaChaPoly. A v3 hub advertises this suite (shipped in hivemind-bus-client
+0.10.1a1 / hivemind-core 4.7.0a1), so a browser peer can negotiate v3. The catch
+is the PSK:
+
+- If the hub uses the **PBKDF2** PSK KDF, the **Password** field alone is enough —
+  the client derives the PSK in-browser.
+- Against the **default argon2id** hub, Web Crypto cannot compute argon2id, so
+  paste a **provisioned PSK** (64 hex chars, equal to
+  `argon2id(password, SHA-256(node_id))` computed on a capable host) into the
+  *Protocol v3* section of the connect dialog. An optional **server key pin**
+  enables KKpsk0 TOFU pinning.
+
+If no PSK is available for a v3 hub, the client warns and falls back to the legacy
+v1 handshake, so the UX keeps working against every hub.
 
 ## Command-line options
 
@@ -111,10 +131,11 @@ options:
 - `hivemind_webchat.WebChat` is a `threading.Thread` wrapping a Tornado
   `HTTPServer`. It serves `templates/index.html` at `/` and the chat assets
   under `/static`.
-- `index.html` loads the HiveMind-js V1 client from jsDelivr and `app.js` wires
+- `index.html` loads the HiveMind-js client from jsDelivr and `app.js` wires
   the connection form to
-  `JarbasHiveMind.connect(host, port, user, accessKey, password)`.
-- All HiveMind traffic (V1 handshake, encryption, message routing) happens in
+  `JarbasHiveMind.connect(host, port, user, accessKey, password, options)`,
+  where `options` carries the optional v3 provisioned PSK / server key pin.
+- All HiveMind traffic (handshake, encryption, message routing) happens in
   the browser inside HiveMind-js — the Python side never touches the hub.
 
 ## Tests
@@ -134,13 +155,19 @@ pytest tests/
 ```
 
 **JavaScript** (`tests/e2e.mjs`): a Node end-to-end test that loads the exact
-HiveMind-js V1 client the page ships, connects to a real loopback hub
-(`tests/hub_fixture.py`), performs the V1 handshake, and verifies the hub
-decrypts and receives an encrypted utterance:
+HiveMind-js client the page ships, connects to a real loopback hub
+(`tests/hub_fixture.py`), performs the handshake, and verifies the hub decrypts
+and receives an encrypted utterance. A second test
+(`tests/v3_negotiation.test.mjs`) drives the browser client's protocol-v3
+negotiation path directly — feeding it a synthetic v3 ServerHello and asserting
+it selects the AES-GCM Noise suite and derives a valid PSK from the password via
+the PBKDF2 KDF. (The loopback hub floors an older stack predating the v3 suite,
+so full v3-over-the-wire is not yet exercised end to end.)
 
 ```bash
-npm install   # ws
-npm test      # node tests/e2e.mjs  (needs python with the [e2e] stack)
+npm install     # ws
+npm run test:v3 # node --test tests/v3_negotiation.test.mjs  (no hub needed)
+npm test        # v3 negotiation + node tests/e2e.mjs  (e2e needs python [e2e] stack)
 ```
 
 Full details in [docs/testing.md](docs/testing.md).
