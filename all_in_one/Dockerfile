@@ -1,69 +1,36 @@
-FROM python:3.7-slim-buster
+FROM python:3.11-slim-bookworm
 
-ENV TERM linux
-ENV DEBIAN_FRONTEND noninteractive
+ENV TERM=linux
+ENV DEBIAN_FRONTEND=noninteractive
 
-# doubt all those are needed TODO minimize deps at some point
 RUN set -x \
 	&& apt-get update \
-	&& apt-get install -y git \
-        locales \
-        sudo \
-        curl \
-	    apt-transport-https \
-	    libtool \
-	    libffi-dev \
-	    libssl-dev \
-	    autoconf \
-	    automake \
-	    bison \
-	    swig \
-	    libglib2.0-dev \
-	    libicu-dev \
-	    pkg-config \
-	    libjpeg-dev \
-	    libfann-dev \
+	&& apt-get install -y --no-install-recommends \
+	    git \
+	    locales \
 	    build-essential \
-	    libdbus-1-dev \
-	    libdbus-glib-1-dev \
-	    libxml2-dev \
-	    libxslt1-dev \
-	    zlib1g-dev \
-	    libcurl4-openssl-dev \
-	    libssl-dev \
-	    libblas-dev \
-	    liblapack-dev \
-	    libatlas-base-dev \
-	    gfortran \
-	--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
-
-RUN pip3 install mycroft-lib[bus]==2021.4.2a13
-RUN pip3 install mycroft-lib[skills]==2021.4.2a13
-RUN pip3 install mycroft-lib[lingua_franca]==2021.4.2a13
-RUN pip3 install jarbas_hive_mind==0.10.7
-
-RUN useradd --no-log-init mycroft -m
-RUN mkdir /etc/mycroft
+# webchat UI + optional headless hivemind-bus-client bridge.
+# The hub (hivemind-core) and skills/agent (ovos-core) run as separate
+# services — see all_in_one/launch.py for the architecture notes.
+# Runtime deps (tornado, ovos-utils, hivemind-bus-client 2.x) are declared in
+# pyproject.toml, so installing the package below pulls the whole graph.
+RUN useradd --no-log-init hivemind -m
 RUN mkdir /opt/hivemind
-COPY config.json /etc/mycroft/mycroft.conf
 
 WORKDIR /opt/hivemind
-COPY ./hivemind_webchat /opt/hivemind/hivemind_webchat
+COPY ../ /opt/hivemind/HiveMind-webchat
+RUN pip3 install --no-cache-dir /opt/hivemind/HiveMind-webchat
 
 # Set the locale
 RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-
-# setup the launcher
-COPY launch.py /opt/hivemind/launch_all.py
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 EXPOSE 9090
-EXPOSE 5678
 
-USER mycroft
+USER hivemind
 
-ENTRYPOINT ["python3", "/opt/hivemind/launch_all.py"]
+ENTRYPOINT ["python3", "/opt/hivemind/HiveMind-webchat/all_in_one/launch.py"]

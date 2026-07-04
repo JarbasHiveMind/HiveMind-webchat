@@ -66,8 +66,8 @@
                             <input type="text" class="form-control" id="accessKey" placeholder="Enter access key">
                         </div>
                         <div class="form-group">
-                            <label for="encryptionKey">Encryption Key:</label>
-                            <input type="text" class="form-control" id="encryptionKey" placeholder="Enter encryption key">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter password">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -104,9 +104,8 @@
 <!-- Include Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/asmcrypto.js"></script>
-<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/webcrypto-shim.js"></script>
-<script src="https://jarbashivemind.github.io/HiveMind-js/static/js/hivemind.js"></script>
+<!-- HiveMind Protocol V1 client (native Web Crypto, no shims required) -->
+<script src="https://cdn.jsdelivr.net/gh/JarbasHiveMind/HiveMind-js@dev/static/js/hivemind.js"></script>
 <script src="static/js/app.js"></script>
 <script type="text/javascript">
     document.getElementById('writer').style.display = 'block';
