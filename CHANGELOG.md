@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.0a1) (2026-07-05)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.3.2a6...0.4.0a1)
+
+**Merged pull requests:**
+
+- feat: adopt HiveMind-js protocol v3 \(Noise\) with v1 fallback [\#17](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/17) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.2a6](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.3.2a6) (2026-07-04)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.2a5...0.3.2a6)
