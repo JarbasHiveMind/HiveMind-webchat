@@ -1,5 +1,9 @@
 # HiveMind WebChat
 
+> [!WARNING]
+> HiveMind is pre-release software under active development. Expect bugs and
+> breaking changes between releases.
+
 ![logo](./javascript.png)
 
 A browser-based WebChat terminal for [HiveMind](https://github.com/JarbasHiveMind/HiveMind-core).
