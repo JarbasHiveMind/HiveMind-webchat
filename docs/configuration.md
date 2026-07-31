@@ -57,3 +57,6 @@ Without `--access-key`, `launch.py` only serves the UI (the browser connects to
 the hub directly). With it, it also starts a headless bridge to the hub. The
 bridge is the code path exercised by the Python end-to-end suite (see
 [Testing](testing.md)).
+
+---
+[← Getting started](getting-started.md) · [Home](index.md) · [Architecture →](architecture.md)

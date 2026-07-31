@@ -57,8 +57,11 @@ Open `http://localhost:9090`, fill in the connection form, and click
 | Access Key | the key from `hivemind-core add-client` |
 | Password | the shared password for that client |
 
-Once the handshake completes, type a message — it is sent to the hub as a
+Once the handshake completes, type a message. It is sent to the hub as a
 `recognizer_loop:utterance` and spoken replies appear in the chat log.
 
 See [Configuration](configuration.md) for the optional headless bridge and
 [Architecture](architecture.md) for how the pieces fit together.
+
+---
+[Home](index.md) · [Configuration →](configuration.md)

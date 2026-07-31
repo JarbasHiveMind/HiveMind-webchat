@@ -44,5 +44,8 @@ run them as separate services.
 
 A static build is published from the `gh-pages` branch at
 <https://jarbashivemind.github.io/HiveMind-webchat>. It is the same page this
-server serves, pointed at whatever hub you enter in the form — no infrastructure
-of your own required to try it.
+server serves, pointed at whatever hub you enter in the form. No infrastructure
+of your own is required to try it.
+
+---
+[← Architecture](architecture.md) · [Home](index.md) · [Dependencies →](dependencies.md)

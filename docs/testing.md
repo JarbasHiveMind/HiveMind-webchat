@@ -1,8 +1,8 @@
 # Testing
 
-WebChat is a Python + JavaScript hybrid, so it has **two** test suites — one for
+WebChat is a Python + JavaScript hybrid, so it has **two** test suites, one for
 each half. There is a single Python test directory (`tests/`, with the e2e suite
-under `tests/e2e/`); there are no `importorskip` / `skipif` guards — the full
+under `tests/e2e/`). There are no `importorskip` / `skipif` guards. The full
 HiveMind 2.x stack is a hard `[e2e]` dependency.
 
 ## Python tests
@@ -12,17 +12,17 @@ uv pip install -e ".[e2e]"
 pytest tests/
 ```
 
-- `tests/test_smoke.py` — import, version, Tornado server construction without
+- `tests/test_smoke.py`: import, version, Tornado server construction without
   binding a socket, and bridge construction with a mocked client (no connect).
-- `tests/e2e/` — the real end-to-end suite below.
+- `tests/e2e/`: the real end-to-end suite below.
 
-### Python e2e — real backend over a real hub
+### Python e2e: real backend over a real hub
 
 `tests/e2e/test_webchat_hivemind_e2e.py` boots a **real `hivemind-core` master
 in-process** (via the [hivescope](https://github.com/JarbasHiveMind/hivescope)
 loopback hub) and drives the webchat's **real** `WebchatBridge` over a **real
 `HiveMessageBusClient`** across a localhost WebSocket. Only the **browser /
-websocket frontend** is mocked — the browser does not run, so user input is
+websocket frontend** is mocked. The browser does not run, so user input is
 injected by calling the bridge's `say()` (exactly what `app.js` does on the
 wire) and rendered `speak` replies are captured from `handle_speak` instead of
 being painted into the DOM.
@@ -34,11 +34,11 @@ being painted into the DOM.
 | `test_speak_response_routed_back_to_webchat` | Hub agent `speak` routed to the peer → real `handle_speak` → rendered back to the (mocked) browser chat log |
 | `test_full_chat_roundtrip` | Full loop: message browser → bridge → hub, the hub answers with a `speak` routed back → bridge → browser |
 
-Everything between the backend and the hub — the bridge, encryption, the
+Everything between the backend and the hub (the bridge, encryption, the
 `HiveMessageBusClient`, the WebSocket transport, the `hivemind-core` listener,
-agent bus, and reverse routing — is genuine production code.
+agent bus, and reverse routing) is genuine production code.
 
-## JavaScript e2e — real browser client over a real hub
+## JavaScript e2e: real browser client over a real hub
 
 ```bash
 npm install   # ws (the only dev-dependency)
@@ -69,3 +69,6 @@ two suites together cover both halves of the hybrid.
 
 All Python CI uses the shared `OpenVoiceOS/gh-automations` reusable workflows
 `@dev`.
+
+---
+[← Dependencies](dependencies.md) · [Home](index.md) · [Troubleshooting →](troubleshooting.md)
