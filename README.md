@@ -7,7 +7,7 @@
 ![logo](./javascript.png)
 
 A browser-based WebChat terminal for [HiveMind](https://github.com/JarbasHiveMind/HiveMind-core).
-It serves a small chat page from a local web server; the page connects to a
+It serves a small chat page from a local web server. The page connects to a
 hivemind-core instance as a satellite using the [HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js)
 client, so you can talk to your voice assistant from any browser on the network.
 
@@ -17,8 +17,8 @@ client, so you can talk to your voice assistant from any browser on the network.
 
 HiveMind is a mesh: satellite devices connect to a central
 [hivemind-core](https://github.com/JarbasHiveMind/HiveMind-core) instance over an
-authenticated, encrypted protocol. WebChat is one such satellite — a text
-front end. The Python package here is only a static web server (Tornado); the
+authenticated, encrypted protocol. WebChat is one such satellite, a text
+front end. The Python package here is only a static web server (Tornado). The
 actual HiveMind connection runs in the browser via HiveMind-js. You point the
 page at a running hivemind-core instance and enter the access key it issued you.
 
@@ -48,10 +48,10 @@ cd HiveMind-webchat
 pip install .
 ```
 
-The HTTP server only needs `tornado`; `hivemind-bus-client` (2.x) and
+The HTTP server only needs `tornado`. `hivemind-bus-client` (2.x) and
 `ovos-utils` are pulled in for the optional headless bridge. Dependency policy
 lives entirely in `pyproject.toml` (no `requirements.txt` / `setup.py` /
-`MANIFEST.in`); the bus-client 2.x stack resolves from prerelease **min-version
+`MANIFEST.in`). The bus-client 2.x stack resolves from prerelease **min-version
 pins** with no `--pre`. See [docs/dependencies.md](docs/dependencies.md).
 
 ## Quickstart
@@ -90,12 +90,12 @@ Open `http://localhost:9090`, fill in the connection form, and click
 | Password | the shared password for that client |
 
 Once the handshake completes, type a message and it is sent to hivemind-core as a
-`recognizer_loop:utterance`; spoken replies are rendered back in the chat log.
+`recognizer_loop:utterance`. Spoken replies are rendered back in the chat log.
 
 The browser negotiates the highest HiveMind protocol version both peers support
-(WIRE-1): against a **protocol v3** hivemind-core instance it runs the Noise handshake over the
-default `Noise_XXpsk2_25519_ChaChaPoly_SHA256` suite — full cipher parity with
-hivemind-core — and against older hivemind-core versions it falls back to the legacy **v1** password
+(WIRE-1). Against a **protocol v3** hivemind-core instance it runs the Noise handshake over the
+default `Noise_XXpsk2_25519_ChaChaPoly_SHA256` suite, with full cipher parity with
+hivemind-core, and against older hivemind-core versions it falls back to the legacy **v1** password
 handshake (PBKDF2-HMAC-SHA256 key derivation + AES-GCM). Either way, all traffic
 after the handshake is encrypted end to end, entirely in the browser via
 [HiveMind-js](https://github.com/JarbasHiveMind/HiveMind-js), which pairs native
@@ -106,7 +106,7 @@ primitives Web Crypto lacks (ChaCha20-Poly1305 and argon2id).
 
 Against a v3 hivemind-core instance (hivemind-bus-client 0.10.1a1 / hivemind-core 4.7.0a1 or newer)
 the browser negotiates the **default** ChaChaPoly suite and derives the PSK as
-`argon2id(password, SHA-256(node_id))` **in-browser** — byte-for-byte identical to
+`argon2id(password, SHA-256(node_id))` **in-browser**, byte-for-byte identical to
 hivemind-core. So the **Password** field alone is enough:
 
 - **Password (default):** the client stretches it with argon2id on-device to the
@@ -146,16 +146,16 @@ options:
   `JarbasHiveMind.connect(host, port, user, accessKey, password, options)`,
   where `options` carries the optional v3 provisioned PSK / server key pin.
 - All HiveMind traffic (handshake, encryption, message routing) happens in
-  the browser inside HiveMind-js — the Python side never touches hivemind-core.
+  the browser inside HiveMind-js. The Python side never touches hivemind-core.
 
 ## Tests
 
 WebChat is a Python + JavaScript hybrid, so it has two test suites.
 
-**Python** (`tests/`): `tests/test_smoke.py` covers the Tornado server + the
-bridge construction; `tests/e2e/` boots a real loopback `hivemind-core` instance via
+**Python** (`tests/`): `tests/test_smoke.py` covers the Tornado server and the
+bridge construction. `tests/e2e/` boots a real loopback `hivemind-core` instance via
 [hivescope](https://github.com/JarbasHiveMind/hivescope) and drives the **real**
-`WebchatBridge` over a **real** `HiveMessageBusClient` — a chat message goes to
+`WebchatBridge` over a **real** `HiveMessageBusClient`. A chat message goes to
 hivemind-core and a `speak` reply is routed back. Only the browser/websocket frontend
 is mocked. No `importorskip`/`skipif`.
 
@@ -169,8 +169,8 @@ HiveMind-js client the page ships, connects to a real loopback hivemind-core ins
 (`tests/hub_fixture.py`), performs the handshake, and verifies hivemind-core decrypts
 and receives an encrypted utterance. A second test
 (`tests/v3_negotiation.test.mjs`) drives the browser client's protocol-v3
-negotiation path directly — feeding it a synthetic v3 ServerHello and asserting
-it selects the AES-GCM Noise suite and derives a valid PSK from the password via
+negotiation path directly. It feeds the client a synthetic v3 ServerHello and asserts
+that it selects the AES-GCM Noise suite and derives a valid PSK from the password via
 the PBKDF2 KDF. (The loopback hivemind-core floors an older stack predating the v3 suite,
 so full v3-over-the-wire is not exercised end to end.)
 
@@ -202,4 +202,4 @@ Original WebChat UI: [jcasoft](https://github.com/jcasoft/external-services).
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE).
+Apache 2.0. See [LICENSE](./LICENSE).

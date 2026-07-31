@@ -52,6 +52,9 @@ interpreter:
 PYTHON=/path/to/venv/bin/python npm test
 ```
 
-If the HiveMind-js client cannot be found, the test fetches it from the CDN; set
+If the HiveMind-js client cannot be found, the test fetches it from the CDN. Set
 `HIVEMIND_JS_PATH` to use a local checkout or `HIVEMIND_JS_URL` to override the
 CDN URL.
+
+---
+[← Testing](testing.md) · [Home](index.md)

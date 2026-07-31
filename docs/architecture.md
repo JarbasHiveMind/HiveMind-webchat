@@ -75,3 +75,6 @@ monolith is split:
 So WebChat keeps only the UI server + the thin client bridge and points users at
 the standalone hub. Running the `all_in_one` Docker image end to end therefore
 means standing up `hivemind-core` + `ovos-core` separately.
+
+---
+[← Configuration](configuration.md) · [Home](index.md) · [Deployment →](deployment.md)

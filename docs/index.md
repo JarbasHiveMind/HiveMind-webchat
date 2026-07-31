@@ -1,4 +1,4 @@
-# HiveMind WebChat — Documentation
+# HiveMind WebChat Documentation
 
 **HiveMind WebChat** is a browser-based text terminal for
 [HiveMind](https://github.com/JarbasHiveMind/HiveMind-core). It is a hybrid of
@@ -24,12 +24,12 @@ optional headless WebchatBridge (Python) ──HiveMessageBusClient──┘
 
 ---
 
-## Satellite spectrum — where does WebChat sit?
+## Satellite spectrum: where does WebChat sit?
 
 HiveMind is a mesh: satellite devices connect to a central
 [hivemind-core](https://github.com/JarbasHiveMind/HiveMind-core) hub over an
-authenticated, encrypted protocol. WebChat is a **text** front end — no audio,
-no local models.
+authenticated, encrypted protocol. WebChat is a **text** front end. It has no
+audio and no local models.
 
 | Satellite | Input | Output | Best for |
 |---|---|---|---|
@@ -42,13 +42,13 @@ no local models.
 
 ## Pages
 
-- [Getting started](getting-started.md) — prerequisites, install, pairing, first run
-- [Configuration](configuration.md) — CLI flags, connection form, the optional bridge
-- [Architecture](architecture.md) — the Python backend, the JS frontend, the bridge, the protocol
-- [Deployment](deployment.md) — reverse proxy / TLS, Docker, the gh-pages static demo
-- [Dependencies](dependencies.md) — runtime + e2e deps and the bus-client 2.x story
-- [Testing](testing.md) — the Python e2e + JS e2e suites, how the frontend is mocked, running both
-- [Troubleshooting](troubleshooting.md) — common failure modes and fixes
+- [Getting started](getting-started.md): prerequisites, install, pairing, first run
+- [Configuration](configuration.md): CLI flags, connection form, the optional bridge
+- [Architecture](architecture.md): the Python backend, the JS frontend, the bridge, the protocol
+- [Deployment](deployment.md): reverse proxy / TLS, Docker, the gh-pages static demo
+- [Dependencies](dependencies.md): runtime + e2e deps and the bus-client 2.x story
+- [Testing](testing.md): the Python e2e + JS e2e suites, how the frontend is mocked, running both
+- [Troubleshooting](troubleshooting.md): common failure modes and fixes
 
 ---
 
