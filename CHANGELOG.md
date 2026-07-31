@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.0a2) (2026-07-31)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.0a1...0.4.0a2)
+
+**Merged pull requests:**
+
+- docs: rewrite README in Simplified Technical English [\#22](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/22) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.4.0a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.0a1) (2026-07-05)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.3.2a6...0.4.0a1)
