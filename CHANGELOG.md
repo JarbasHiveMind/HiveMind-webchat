@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a1) (2026-08-10)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.0a2...0.4.1a1)
+
+**Merged pull requests:**
+
+- fix\(ci\): check out HiveMind-js so the v3 negotiation test can run [\#25](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/25) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.4.0a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.0a2) (2026-07-31)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.0a1...0.4.0a2)
