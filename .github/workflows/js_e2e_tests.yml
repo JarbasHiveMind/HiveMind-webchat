@@ -13,7 +13,7 @@ jobs:
   js-e2e:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # tests/v3_negotiation.test.mjs requires the HiveMind-js client itself,
       # not the CDN bundle this page loads at runtime: it imports
@@ -22,7 +22,7 @@ jobs:
       # not exist on a runner, so without this the job fails with
       # "hivemind-js not found. Set HIVEMIND_JS_PATH."
       - name: Checkout HiveMind-js
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: JarbasHiveMind/HiveMind-js
           ref: dev
