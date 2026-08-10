@@ -66,7 +66,7 @@ real `HiveMessageBusClient` against a real hub) and is opt-in via
 ## Where the monolith went
 
 The pre-rename Mycroft-era code bundled a full core + message bus + the
-`jarbas_hive_mind` listener in one process. In the modern ecosystem that
+`jarbas_hive_mind` server in one process. In the modern ecosystem that
 monolith is split:
 
 - the hub is **hivemind-core** (a separate service), and

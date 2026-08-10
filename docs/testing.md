@@ -35,7 +35,7 @@ being painted into the DOM.
 | `test_full_chat_roundtrip` | Full loop: message browser → bridge → hub, the hub answers with a `speak` routed back → bridge → browser |
 
 Everything between the backend and the hub (the bridge, encryption, the
-`HiveMessageBusClient`, the WebSocket transport, the `hivemind-core` listener,
+`HiveMessageBusClient`, the WebSocket transport, `hivemind-core`,
 agent bus, and reverse routing) is genuine production code.
 
 ## JavaScript e2e: real browser client over a real hub
