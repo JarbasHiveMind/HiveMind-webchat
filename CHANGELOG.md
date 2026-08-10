@@ -1,12 +1,75 @@
 # Changelog
 
-## [V0.3.1a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.1a2) (2023-08-03)
+## [0.4.1a3](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a3) (2026-08-10)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/ee7736f02289a6b101619b2dc4941a2e8747888b...V0.3.1a2)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.1a2...0.4.1a3)
 
-**Fixed bugs:**
+**Merged pull requests:**
 
-- support hivemind encryption [\#1](https://github.com/JarbasHiveMind/HiveMind-webchat/issues/1)
+- Update actions/checkout action to v7 [\#14](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/14) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [0.4.1a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a2) (2026-08-10)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.1a1...0.4.1a2)
+
+**Merged pull requests:**
+
+- docs: drop misleading listener terminology [\#24](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/24) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.4.1a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a1) (2026-08-10)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.0a2...0.4.1a1)
+
+**Merged pull requests:**
+
+- fix\(ci\): check out HiveMind-js so the v3 negotiation test can run [\#25](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/25) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.4.0a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.0a2) (2026-07-31)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.0a1...0.4.0a2)
+
+**Merged pull requests:**
+
+- docs: rewrite README in Simplified Technical English [\#22](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/22) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.4.0a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.0a1) (2026-07-05)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.3.2a6...0.4.0a1)
+
+**Merged pull requests:**
+
+- feat: adopt HiveMind-js protocol v3 \(Noise\) with v1 fallback [\#17](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/17) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.3.2a6](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.3.2a6) (2026-07-04)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.2a5...0.3.2a6)
+
+**Merged pull requests:**
+
+- feat!: modernize to hivemind-bus-client + pyproject packaging [\#13](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/13) ([JarbasAl](https://github.com/JarbasAl))
+- Update actions/checkout action to v7 [\#11](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/11) ([renovate[bot]](https://github.com/apps/renovate))
+- docs: zero-to-hero README [\#10](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/10) ([JarbasAl](https://github.com/JarbasAl))
+- Configure Renovate [\#2](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/2) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [V0.3.2a5](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.2a5) (2024-03-14)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.2a4...V0.3.2a5)
+
+## [V0.3.2a4](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.2a4) (2024-03-14)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.2a3...V0.3.2a4)
+
+## [V0.3.2a3](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.2a3) (2024-03-14)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.2a2...V0.3.2a3)
+
+## [V0.3.2a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.2a2) (2024-03-14)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.2a1...V0.3.2a2)
+
+## [V0.3.2a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/V0.3.2a1) (2023-09-28)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/V0.3.1a0...V0.3.2a1)
 
 
 
