@@ -15,6 +15,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # tests/v3_negotiation.test.mjs requires the HiveMind-js client itself,
+      # not the CDN bundle this page loads at runtime: it imports
+      # selectNoiseOptions/derivePskPBKDF2 to drive the v3 negotiation. Its
+      # resolver falls back to a sibling ../HiveMind-js checkout, which does
+      # not exist on a runner, so without this the job fails with
+      # "hivemind-js not found. Set HIVEMIND_JS_PATH."
+      - name: Checkout HiveMind-js
+        uses: actions/checkout@v4
+        with:
+          repository: JarbasHiveMind/HiveMind-js
+          ref: dev
+          path: hivemind-js-src
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -41,4 +54,6 @@ jobs:
         run: npm install
 
       - name: Run JS client E2E
+        env:
+          HIVEMIND_JS_PATH: ${{ github.workspace }}/hivemind-js-src/static/js/hivemind.js
         run: npm test
