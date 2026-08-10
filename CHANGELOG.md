@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a2) (2026-08-10)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.1a1...0.4.1a2)
+
+**Merged pull requests:**
+
+- docs: drop misleading listener terminology [\#24](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/24) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.4.1a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a1) (2026-08-10)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.0a2...0.4.1a1)
