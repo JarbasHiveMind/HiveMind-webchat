@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1a3](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a3) (2026-08-10)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.1a2...0.4.1a3)
+
+**Merged pull requests:**
+
+- Update actions/checkout action to v7 [\#14](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/14) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.4.1a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a2) (2026-08-10)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.1a1...0.4.1a2)
