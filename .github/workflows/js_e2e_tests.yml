@@ -36,7 +36,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Install Python hub deps
         # Prerelease floors so a plain `pip install` (no --pre, no git branch)
