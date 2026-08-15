@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1a4](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a4) (2026-08-15)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.1a3...0.4.1a4)
+
+**Merged pull requests:**
+
+- docs: add AGENTS.md with per-repo agent conventions [\#29](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/29) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.4.1a3](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.1a3) (2026-08-10)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.1a2...0.4.1a3)
