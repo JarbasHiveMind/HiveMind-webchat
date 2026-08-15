@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hivemind_webchat"
+description = "Web-chat client for HiveMind — serves a browser chat UI that talks to a HiveMind hub"
+readme = "README.md"
+authors = [{ name = "jarbasAI", email = "jarbasai@mailfence.com" }]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dynamic = ["version"]
+dependencies = [
+    "tornado",
+    "ovos-utils",
+    # The optional headless bridge speaks the HiveMind 2.x protocol; floor the
+    # bus-client pre-release so a plain install (no --pre) resolves the 2.x
+    # line. ovos-bus-client 2.x is pulled transitively by the same alphas.
+    "hivemind-bus-client>=0.9.2a1,<1.0.0",
+]
+
+[project.optional-dependencies]
+# End-to-end tests: a real hivemind-core master booted in-process by the
+# hivescope harness, plus this client's real headless bridge talking to it over
+# a real HiveMessageBusClient WebSocket. Only the browser/websocket frontend
+# surface is mocked. The HiveMind 2.x stack (core / agent-plugin / hivescope)
+# requires ovos-bus-client>=2.0.0a3; restate the transitive pre-release floors
+# here so uv/pip pick the 2.x-compatible alphas WITHOUT --pre (a pre-release
+# min-version pin is enough). Without the floors, the stable hivemind-core
+# 4.0.0 line (old bus-client pin) wins and conflicts (ResolutionImpossible).
+e2e = [
+    "pytest",
+    "pytest-timeout",
+    "hivescope>=0.5.2a1",
+    "hivemind-core>=4.6.2a1",
+    "ovos-bus-client>=2.0.0a3,<3.0.0",
+    "ovos-plugin-manager>=2.4.1a1,<3.0.0",
+    "hivemind-ovos-agent-plugin>=0.3.1a1",
+    "hivemind-plugin-manager>=0.8.0a1",
+    "json-database>=0.10.2a1",
+    "hivemind-sqlite-database>=0.4.0a2",
+    "hivemind-json-db-plugin>=0.0.3a2",
+    "hivemind-websocket-protocol>=0.0.3",
+    "ovos-utils>=0.11.1a1",
+    "ovos-workshop>=8.0.0a1",
+]
+# Back-compat alias: the shared CI workflows historically install the `test`
+# extra; keep it pointing at the e2e set.
+test = ["hivemind_webchat[e2e]"]
+
+[project.urls]
+Homepage = "https://github.com/JarbasHiveMind/HiveMind-webchat"
+
+[project.scripts]
+hivemind-webchat = "hivemind_webchat.__main__:main"
+
+[tool.setuptools]
+packages = ["hivemind_webchat"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+hivemind_webchat = ["static/**/*", "templates/**/*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "hivemind_webchat.version.__version__" }
