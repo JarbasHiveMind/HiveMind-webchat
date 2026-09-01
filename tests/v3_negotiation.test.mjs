@@ -22,12 +22,18 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { existsSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 
-function resolveHivemindJs() {
+// Same CDN URL tests/fetch_client.mjs and tests/e2e.mjs pull from, so a plain
+// `npm install && npm test` (the README quickstart) works without a sibling
+// HiveMind-js checkout or a manual `npm run fetch-client` first.
+const CLIENT_URL = process.env.HIVEMIND_JS_URL ||
+    'https://cdn.jsdelivr.net/gh/JarbasHiveMind/HiveMind-js@dev/static/js/hivemind.js';
+
+async function resolveHivemindJs() {
     if (process.env.HIVEMIND_JS_PATH) return resolve(process.env.HIVEMIND_JS_PATH);
     try {
         return require.resolve('hivemind-js');
@@ -35,11 +41,23 @@ function resolveHivemindJs() {
         const sibling = resolve(
             __dirname, '..', '..', 'HiveMind-js', 'static', 'js', 'hivemind.js');
         if (existsSync(sibling)) return sibling;
-        throw new Error('hivemind-js not found. Set HIVEMIND_JS_PATH.');
+        const vendored = resolve(__dirname, 'vendor', 'hivemind.js');
+        if (existsSync(vendored)) return vendored;
+        console.log(`[*] No local client found; fetching ${CLIENT_URL}`);
+        const res = await fetch(CLIENT_URL);
+        if (!res.ok) {
+            throw new Error(
+                `hivemind-js not found and fetch failed: HTTP ${res.status}. Set HIVEMIND_JS_PATH.`);
+        }
+        const body = await res.text();
+        const outDir = resolve(__dirname, 'vendor');
+        mkdirSync(outDir, { recursive: true });
+        writeFileSync(vendored, body);
+        return vendored;
     }
 }
 
-const hm = require(resolveHivemindJs());
+const hm = require(await resolveHivemindJs());
 const { JarbasHiveMind, selectNoiseOptions, derivePskPBKDF2, NOISE_SUITES_JS } = hm;
 
 const NODE_ID = 'HiveMind-Node';
