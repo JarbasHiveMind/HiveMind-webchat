@@ -94,6 +94,17 @@ $(document).ready(function () {
 
     hivemind_connection.onHiveDisconnected = function () {
         push_response("Hivemind connection lost...")
+        $('#connectBtn').removeClass('btn-success').addClass('btn-danger').text('Connect');
+    };
+
+    // A close code 1008 (Policy Violation) means the hub rejected the
+    // credentials/handshake — terminal, not a transient drop. The client
+    // does not auto-retry (connect() only fires from the credentials form),
+    // but without this the user just sees the generic "connection lost"
+    // message in onHiveDisconnected with no indication why.
+    hivemind_connection.onHiveError = function (error) {
+        console.error("HiveMind error:", error);
+        push_response("HiveMind error: " + (error && error.message ? error.message : error));
     };
 
     $('#textbox').keypress(function (e) {
