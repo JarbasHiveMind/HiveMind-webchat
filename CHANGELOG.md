@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.2a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.2a2) (2026-09-10)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.2a1...0.4.2a2)
+
+**Merged pull requests:**
+
+- Update dependency python [\#4](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/4) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.4.2a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.2a1) (2026-09-01)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.1a6...0.4.2a1)
