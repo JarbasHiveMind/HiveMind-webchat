@@ -8,24 +8,55 @@
 -------------------------------------------------------------
 
 */
-// HiveMind socket
-const user = "HivemindWebChatV0.2";
-var key = "DEMO";
-var ip = "0.0.0.0";
-var port = 5678;
-var crypto_key = null;
+// HiveMind socket (hivemind-js client — see HiveMind-js). The client negotiates
+// the highest protocol version both peers support: v3 Noise (default ChaChaPoly
+// suite) where the hub offers it, else the v1 password handshake.
+const user = "HivemindWebChat";
 
 
 $(document).ready(function () {
-    // prompt user for hivemind creds
-    // TODO a nice modal
-    let host = prompt("Please enter HiveMind host (wss not supported!)", "0.0.0.0:5678");
-    key = prompt("Please enter HiveMind access key", "your_access_key");
-    crypto_key = prompt("Please enter HiveMind encryption key", "exactly_16chars");
-    ip = host.split(":")[0]
-    port = host.split(":")[1]
-
+	
     const hivemind_connection = new JarbasHiveMind()
+    $('#connectBtn').addClass('btn-danger')
+	
+    // Function to open modal when the button is clicked
+    $('#connectBtn').click(function () {
+        $('#credentialsModal').modal('show');
+    });
+
+    // Function to handle form submission
+    $('#credentialsForm').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Retrieve input values
+        var accessKey = $('#accessKey').val();
+        // The password is all that is normally needed: against a v3 hub the client
+        // derives the Noise PSK as argon2id(password, SHA-256(node_id)) in-browser
+        // and negotiates the default ChaChaPoly suite; on the v1 path it drives the
+        // PBKDF2 handshake / AES-GCM session key.
+        var password = $('#password').val();
+        let ip = $('#ip').val();
+        let port = $('#port').val();
+
+        // Optional protocol-v3 (Noise) options. Empty fields keep the client on
+        // the password path (argon2id PSK in-browser, or v1 fallback).
+        let options = {};
+        let psk = ($('#psk').val() || '').trim();
+        if (psk) options.psk = psk;
+        let serverKey = ($('#serverKey').val() || '').trim();
+        if (serverKey) options.serverNoiseKey = serverKey;
+
+        try {
+            hivemind_connection.connect(ip, port, user, accessKey, password, options);
+        } catch (error) {
+            console.error("Error connecting to HiveMind:", error);
+            push_response("Error connecting to HiveMind: " + error)
+        }
+	    
+        // Close the modal
+        $('#credentialsModal').modal('hide');
+    });
+	
 
     $('.chat[data-chat=person2]').addClass('active-chat')
     $('.person[data-chat=person2]').addClass('active')
@@ -53,6 +84,7 @@ $(document).ready(function () {
 
     hivemind_connection.onHiveConnected = function () {
         push_response("Welcome to the HiveMind Webchat client!")
+        $('#connectBtn').removeClass('btn-danger').addClass('btn-success').text('Connected');
     };
 
     hivemind_connection.onMycroftSpeak = function (mycroft_message) {
@@ -62,6 +94,17 @@ $(document).ready(function () {
 
     hivemind_connection.onHiveDisconnected = function () {
         push_response("Hivemind connection lost...")
+        $('#connectBtn').removeClass('btn-success').addClass('btn-danger').text('Connect');
+    };
+
+    // A close code 1008 (Policy Violation) means the hub rejected the
+    // credentials/handshake — terminal, not a transient drop. The client
+    // does not auto-retry (connect() only fires from the credentials form),
+    // but without this the user just sees the generic "connection lost"
+    // message in onHiveDisconnected with no indication why.
+    hivemind_connection.onHiveError = function (error) {
+        console.error("HiveMind error:", error);
+        push_response("HiveMind error: " + (error && error.message ? error.message : error));
     };
 
     $('#textbox').keypress(function (e) {
@@ -82,5 +125,5 @@ $(document).ready(function () {
         return false
     })
 
-    hivemind_connection.connect(ip, port, user, key, crypto_key);
+   
 });
