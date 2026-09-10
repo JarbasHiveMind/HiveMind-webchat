@@ -125,9 +125,35 @@
 <!-- Include Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<!-- HiveMind Protocol V1 client (native Web Crypto, no shims required) -->
-<script src="https://cdn.jsdelivr.net/gh/JarbasHiveMind/HiveMind-js@dev/static/js/hivemind.js"></script>
-<script src="static/js/app.js"></script>
+<!-- @noble/hashes and @noble/ciphers are ESM-only, so they load as a module and
+     hand argon2id/chacha20poly1305 to hivemind.js through globalThis.HiveMindNoble.
+     hivemind.js reads that global from a synchronous top-level IIFE, so it must
+     be injected only after the assignment lands; a plain <script src> tag next
+     to a module one gives no such guarantee, so both hivemind.js and app.js are
+     injected from inside this module, in order, after each finishes loading. -->
+<script type="module">
+    import { argon2id } from "https://cdn.jsdelivr.net/npm/@noble/hashes@2.4.0/argon2.js/+esm";
+    import { chacha20poly1305 } from "https://cdn.jsdelivr.net/npm/@noble/ciphers@2.4.0/chacha.js/+esm";
+
+    globalThis.HiveMindNoble = { argon2id, chacha20poly1305 };
+
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = src;
+            s.onload = resolve;
+            s.onerror = () => reject(new Error('failed to load ' + src));
+            document.body.appendChild(s);
+        });
+    }
+
+    // HiveMind Protocol v3 (Noise) client, falling back to v1 only when a hub
+    // does not speak v3. Loaded after HiveMindNoble so its argon2id/ChaChaPoly
+    // suite is available on the first connection attempt, not just a retry.
+    loadScript("https://cdn.jsdelivr.net/gh/JarbasHiveMind/HiveMind-js@dev/static/js/hivemind.js")
+        .then(() => loadScript("static/js/app.js"))
+        .catch((error) => console.error("HiveMind client failed to load:", error));
+</script>
 <script type="text/javascript">
     document.getElementById('writer').style.display = 'block';
 </script>
