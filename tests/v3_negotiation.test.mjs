@@ -1,21 +1,22 @@
 /**
  * Protocol-v3 (Noise) negotiation test for the browser client.
  *
- * The loopback hub used by e2e.mjs floors an older HiveMind stack that predates
- * the v3 AES-GCM Noise suite, so full v3-over-the-wire cannot yet be exercised
- * end to end. This test instead drives the *browser client's* v3 negotiation
- * logic directly — the exact code path app.js triggers when it passes the
- * connect() options object — against synthetic ServerHello
- * payloads, proving:
+ * This test drives the client's v3 negotiation logic directly — the exact code
+ * path app.js triggers when it passes the connect() options object — against
+ * synthetic ServerHello payloads, proving:
  *
- *   1. the client selects the AES-GCM Noise suite a browser can actually run
- *      (Web Crypto has no ChaChaPoly),
- *   2. against a PBKDF2-KDF v3 hub the password alone yields a valid 32-byte PSK,
- *   3. against an argon2id v3 hub with no provisioned PSK it declines v3 and
- *      falls back to the legacy handshake (returns null),
- *   4. a provisioned PSK is honoured regardless of the server KDF.
+ *   1. selectNoiseOptions picks AES-GCM, the only suite the shipped page can
+ *      run (index.html loads only @noble/hashes for argon2id, never
+ *      @noble/ciphers, so NOISE_SUITES_JS never contains ChaChaPoly here),
+ *   2. it declines a server offering no suite the client supports,
+ *   3. against a PBKDF2-KDF v3 hub the password alone yields a valid 32-byte
+ *      PSK, matching an independent PBKDF2 derivation,
+ *   4. against an argon2id v3 hub with no provisioned PSK it derives a PSK
+ *      matching an independent argon2id derivation called directly from
+ *      @noble/hashes with the spec-fixed parameters,
+ *   5. a provisioned PSK is honoured regardless of the server KDF.
  *
- * Runs headless on Node's Web Crypto (globalThis.crypto.subtle) — no browser.
+ * Runs headless on Node (require() fallback) — no browser.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -23,6 +24,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { argon2id } from '@noble/hashes/argon2.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -57,6 +59,12 @@ async function resolveHivemindJs() {
     }
 }
 
+// Mirror index.html's browser provider exactly: expose argon2id (and only
+// argon2id, never chacha20poly1305) on globalThis.HiveMindNoble before the
+// client loads, instead of relying on Node's require() fallback — the
+// shipped page never has @noble/ciphers, so this is what a real browser sees.
+globalThis.HiveMindNoble = { argon2id };
+
 const hm = require(await resolveHivemindJs());
 const { JarbasHiveMind, selectNoiseOptions, derivePskPBKDF2, NOISE_SUITES_JS } = hm;
 
@@ -77,7 +85,7 @@ function pbkdf2Hello() {
     };
 }
 
-test('selectNoiseOptions picks the AES-GCM suite the browser can run', () => {
+test('selectNoiseOptions picks the AES-GCM suite the shipped page can run', () => {
     const sel = selectNoiseOptions(
         ['XXpsk2', 'KKpsk0'],
         ['25519_ChaChaPoly_SHA256', '25519_AESGCM_SHA256'],
@@ -88,8 +96,8 @@ test('selectNoiseOptions picks the AES-GCM suite the browser can run', () => {
     assert.deepEqual(NOISE_SUITES_JS, ['25519_AESGCM_SHA256']);
 });
 
-test('selectNoiseOptions declines a ChaChaPoly-only server', () => {
-    const sel = selectNoiseOptions(['XXpsk2'], ['25519_ChaChaPoly_SHA256'], null);
+test('selectNoiseOptions declines a server offering no mutual suite', () => {
+    const sel = selectNoiseOptions(['XXpsk2'], ['unsupported-suite'], null);
     assert.equal(sel, null);
 });
 
@@ -108,16 +116,27 @@ test('password derives a valid v3 PSK against a PBKDF2-KDF hub', async () => {
     assert.deepEqual([...psk], [...expected]);
 });
 
-test('argon2id hub with no provisioned PSK falls back to legacy (null)', async () => {
+test('password derives a valid v3 PSK against an argon2id-KDF hub', async () => {
     const c = new JarbasHiveMind();
     c._maxProtocolVersion = 3;
     c._password = PASSWORD;
     c._serverNodeId = NODE_ID;
 
     const hello = pbkdf2Hello();
-    hello.noise.kdf = { name: 'argon2id' };   // Web Crypto cannot compute this
+    hello.noise.kdf = { name: 'argon2id' };
     const psk = await c._resolveNoisePsk(hello);
-    assert.equal(psk, null, 'must decline v3 and fall back to legacy');
+    assert.ok(psk instanceof Uint8Array, 'a PSK must be resolved');
+    assert.equal(psk.length, 32);
+
+    // Independent oracle: call @noble/hashes' argon2id directly with the
+    // spec-fixed parameters (HIVEMIND-CRYPTO-1 §3), not the client's own
+    // derivePskArgon2 (which _resolveNoisePsk itself calls, and so cannot
+    // catch a wrong parameter choice there).
+    const salt = new Uint8Array(
+        await crypto.subtle.digest('SHA-256', new TextEncoder().encode(NODE_ID)));
+    const expected = argon2id(new TextEncoder().encode(PASSWORD), salt,
+        { t: 3, m: 64 * 1024, p: 1, dkLen: 32 });
+    assert.deepEqual([...psk], [...expected]);
 });
 
 test('a provisioned PSK is honoured regardless of server KDF', async () => {

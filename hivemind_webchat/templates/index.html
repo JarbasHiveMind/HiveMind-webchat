@@ -125,6 +125,13 @@
 <!-- Include Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+<!-- Noise PSK primitive (protocol v3 mandatory handshake). Pinned to an exact
+     release so the page never silently picks up a breaking upstream change. -->
+<script type="module">
+    import { argon2id } from "https://cdn.jsdelivr.net/npm/@noble/hashes@2.4.0/argon2.js";
+    globalThis.HiveMindNoble = { argon2id };
+</script>
+
 <!-- HiveMind Protocol V1 client (native Web Crypto, no shims required) -->
 <script src="https://cdn.jsdelivr.net/gh/JarbasHiveMind/HiveMind-js@dev/static/js/hivemind.js"></script>
 <script src="static/js/app.js"></script>

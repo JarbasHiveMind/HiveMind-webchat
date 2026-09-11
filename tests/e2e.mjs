@@ -6,8 +6,10 @@
  * Flow:
  *   1. spawn tests/hub_fixture.py  -> a real loopback hivemind-core master
  *   2. read the hub URL + credentials it prints
- *   3. load HiveMind-js, polyfill globalThis.WebSocket with `ws`
- *   4. connect() -> full V1 handshake (PBKDF2 key derivation + AES-GCM)
+ *   3. load HiveMind-js, polyfill globalThis.WebSocket with `ws` and
+ *      globalThis.HiveMindNoble with argon2id (matching index.html)
+ *   4. connect() -> full v3 Noise handshake (argon2id PSK + AES-GCM), the
+ *      exact suite the shipped page negotiates
  *   5. sendUtterance() -> encrypted bus message
  *   6. ask the hub fixture to confirm it received the utterance
  *
@@ -32,6 +34,13 @@ const require = createRequire(import.meta.url);
 // ── Polyfill the browser WebSocket the client expects ─────────────────────────
 const WebSocket = require('ws');
 globalThis.WebSocket = WebSocket;
+
+// ── Mirror index.html's Noise PSK provider exactly ─────────────────────────────
+// Expose argon2id (and only argon2id, never chacha20poly1305) the same way
+// the shipped page does, so this test exercises the suite a real browser
+// negotiates (AES-GCM) rather than one only available via Node's require().
+const { argon2id } = await import('@noble/hashes/argon2.js');
+globalThis.HiveMindNoble = { argon2id };
 
 // ── Locate (or fetch) the HiveMind-js client ──────────────────────────────────
 // Source of truth is the same CDN URL the webchat page loads in production, so
