@@ -59,19 +59,6 @@ $(document).ready(function () {
 	
 
     $('.chat[data-chat=person2]').addClass('active-chat')
-    $('.person[data-chat=person2]').addClass('active')
-    $('.left .person').mousedown(function () {
-        if ($(this).hasClass('.active')) {
-            return false
-        }
-        const findChat = $(this).attr('data-chat')
-        const personName = $(this).find('.name').text()
-        $('.right .top .name').html(personName)
-        $('.chat').removeClass('active-chat')
-        $('.left .person').removeClass('active')
-        $(this).addClass('active')
-        $('.chat[data-chat = ' + findChat + ']').addClass('active-chat')
-    });
 
     // Text from the user and from the hub is untrusted. Set it with .text(),
     // never as an HTML string, so markup in it shows as text.
