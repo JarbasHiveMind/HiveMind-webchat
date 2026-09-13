@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.3a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.3a1) (2026-09-13)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.2a2...0.4.3a1)
+
+**Merged pull requests:**
+
+- fix: pin @noble crypto and make v3 negotiation tests control their own backend [\#37](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/37) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.4.2a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.2a2) (2026-09-10)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.2a1...0.4.2a2)
