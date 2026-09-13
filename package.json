@@ -11,6 +11,8 @@
     "test": "node --test tests/v3_negotiation.test.mjs && node tests/e2e.mjs"
   },
   "devDependencies": {
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "@noble/hashes": "2.4.0",
+    "@noble/ciphers": "2.4.0"
   }
 }
