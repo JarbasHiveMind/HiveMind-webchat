@@ -14,7 +14,7 @@ RUN set -x \
 # webchat UI + optional headless hivemind-bus-client bridge.
 # The hub (hivemind-core) and skills/agent (ovos-core) run as separate
 # services — see all_in_one/launch.py for the architecture notes.
-# Runtime deps (tornado, ovos-utils, hivemind-bus-client 2.x) are declared in
+# Runtime deps (tornado, ovos-utils, hivemind-bus-client 1.x) are declared in
 # pyproject.toml, so installing the package below pulls the whole graph.
 RUN useradd --no-log-init hivemind -m
 RUN mkdir /opt/hivemind

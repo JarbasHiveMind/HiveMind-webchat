@@ -7,8 +7,8 @@
   "author": "JarbasAi <jarbasai@mailfence.com>",
   "scripts": {
     "fetch-client": "node tests/fetch_client.mjs",
-    "test:v3": "node --test tests/v3_negotiation.test.mjs",
-    "test": "node --test tests/v3_negotiation.test.mjs && node tests/e2e.mjs"
+    "test:v3": "node --test tests/page_noise_provider_order.test.mjs tests/v3_negotiation.test.mjs",
+    "test": "node --test tests/page_noise_provider_order.test.mjs tests/v3_negotiation.test.mjs && node tests/e2e.mjs"
   },
   "devDependencies": {
     "ws": "^8.18.0",
