@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.4a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.4a1) (2026-09-13)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.3a1...0.4.4a1)
+
+**Merged pull requests:**
+
+- fix: load the argon2id provider before the HiveMind client, and lift the bus-client ceiling [\#40](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/40) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.4.3a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.3a1) (2026-09-13)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.2a2...0.4.3a1)
