@@ -48,10 +48,10 @@ cd HiveMind-webchat
 pip install .
 ```
 
-The HTTP server only needs `tornado`. `hivemind-bus-client` (2.x) and
-`ovos-utils` are pulled in for the optional headless bridge. Dependency policy
-lives entirely in `pyproject.toml` (no `requirements.txt` / `setup.py` /
-`MANIFEST.in`). The bus-client 2.x stack resolves from prerelease **min-version
+The HTTP server only needs `tornado`. `hivemind-bus-client` (`>=1.0.0a1,<2.0.0`)
+and `ovos-utils` are pulled in for the optional headless bridge. Dependency
+policy lives entirely in `pyproject.toml` (no `requirements.txt` / `setup.py` /
+`MANIFEST.in`). The bus-client 1.x stack resolves from prerelease **min-version
 pins** with no `--pre`. See [docs/dependencies.md](docs/dependencies.md).
 
 ## Quickstart

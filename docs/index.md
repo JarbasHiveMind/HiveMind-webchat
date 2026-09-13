@@ -46,7 +46,7 @@ audio and no local models.
 - [Configuration](configuration.md): CLI flags, connection form, the optional bridge
 - [Architecture](architecture.md): the Python backend, the JS frontend, the bridge, the protocol
 - [Deployment](deployment.md): reverse proxy / TLS, Docker, the gh-pages static demo
-- [Dependencies](dependencies.md): runtime + e2e deps and the bus-client 2.x story
+- [Dependencies](dependencies.md): runtime + e2e deps and the bus-client 1.x line
 - [Testing](testing.md): the Python e2e + JS e2e suites, how the frontend is mocked, running both
 - [Troubleshooting](troubleshooting.md): common failure modes and fixes
 

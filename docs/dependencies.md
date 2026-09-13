@@ -12,19 +12,20 @@ HiveMind-js from a CDN). Packaged web assets ship via
 |---|---|---|
 | `tornado` | any | The HTTP server that serves the chat page |
 | `ovos-utils` | any | Logging / daemon helpers used by the bridge + launcher |
-| `hivemind-bus-client` | `>=0.9.2a1,<1.0.0` | The optional headless `WebchatBridge` connection to the hub |
+| `hivemind-bus-client` | `>=1.0.0a1,<2.0.0` | The optional headless `WebchatBridge` connection to the hub |
 
 The HTTP server (`WebChat`) only needs `tornado`. `hivemind-bus-client` and
 `ovos-utils` are pulled in for the optional headless bridge. The browser does
 not use them, since it loads HiveMind-js in-page.
 
-### Why the pre-release floor (the bus-client 2.x story)
+### Why the pre-release floor (the bus-client 1.x line)
 
-The HiveMind **2.x** protocol stack (hub, agent plugin, harness) lives in the
-pre-releases. `hivemind-bus-client>=0.9.2a1` is the 2.x line and rides
-`ovos-bus-client>=2.0.0a3`. Flooring the bus-client at its alpha is enough for
-`uv`/`pip` to select the 2.x-compatible versions. A pre-release **min-version
-pin is sufficient**, so `--pre` / `pre_install_pip` is never used.
+Current hivemind-core requires the protocol v3 (Noise) handshake. The
+`hivemind-bus-client` **1.x** line speaks that handshake, and it lives in the
+pre-releases. `hivemind-bus-client>=1.0.0a1` rides `ovos-bus-client` 2.x.
+Flooring the bus-client at its alpha is enough for `uv`/`pip` to select
+compatible versions. A pre-release **min-version pin is sufficient**, so
+`--pre` / `pre_install_pip` is never used.
 
 ## Test / e2e dependencies (`[e2e]` extra)
 
