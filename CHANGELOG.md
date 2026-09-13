@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.5a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.5a1) (2026-09-13)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.4a1...0.4.5a1)
+
+**Merged pull requests:**
+
+- fix: show hub and user text as text in the chat log [\#41](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/41) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.4.4a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.4a1) (2026-09-13)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.3a1...0.4.4a1)
