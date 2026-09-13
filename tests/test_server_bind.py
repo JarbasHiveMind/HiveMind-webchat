@@ -54,6 +54,23 @@ def test_cli_parses_host_and_int_port():
         main.assert_called_with(8081, "0.0.0.0")
 
 
+def test_cli_host_default_reads_webchat_host(monkeypatch):
+    from hivemind_webchat import __main__ as cli
+    with patch.object(cli.webchat, "main") as main:
+        monkeypatch.setenv("WEBCHAT_HOST", "0.0.0.0")
+        with patch.object(sys, "argv", ["hivemind-webchat"]):
+            cli.main()
+        main.assert_called_with(9090, "0.0.0.0")
+        # an explicit --host still wins over the variable
+        with patch.object(sys, "argv", ["hivemind-webchat", "--host", "127.0.0.2"]):
+            cli.main()
+        main.assert_called_with(9090, "127.0.0.2")
+        monkeypatch.delenv("WEBCHAT_HOST")
+        with patch.object(sys, "argv", ["hivemind-webchat"]):
+            cli.main()
+        main.assert_called_with(9090, "127.0.0.1")
+
+
 def test_server_serves_page_on_loopback():
     from hivemind_webchat import WebChat
     port = _free_port()
