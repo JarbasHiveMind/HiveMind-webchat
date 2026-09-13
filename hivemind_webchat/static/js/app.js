@@ -18,11 +18,27 @@ $(document).ready(function () {
 	
     const hivemind_connection = new JarbasHiveMind()
     const CONNECT_LABEL = 'Connect to HiveMind'
+    // A hub that never answers must not keep the Connect button disabled.
+    const CONNECT_TIMEOUT_MS = 15000
     // One of: 'disconnected', 'connecting', 'connected'.
     let connectionState = 'disconnected'
+    let connectTimer = null
 
     function setConnectionState(state) {
         connectionState = state
+        if (connectTimer !== null) {
+            clearTimeout(connectTimer)
+            connectTimer = null
+        }
+        if (state === 'connecting') {
+            connectTimer = setTimeout(function () {
+                connectTimer = null
+                if (connectionState === 'connecting') {
+                    push_response("Could not connect to HiveMind: the hub did not answer")
+                    setConnectionState('disconnected')
+                }
+            }, CONNECT_TIMEOUT_MS)
+        }
         const btn = $('#connectBtn')
         btn.removeClass('btn-danger btn-warning btn-success')
         if (state === 'connecting') {
@@ -146,8 +162,13 @@ $(document).ready(function () {
     // sendUtterance returns a promise. It rejects when the connection is not
     // ready or the send fails, so tell the user the message was not sent.
     function send_utterance(text) {
-        return Promise.resolve()
-            .then(function () { return hivemind_connection.sendUtterance(text) })
+        let sent
+        try {
+            sent = Promise.resolve(hivemind_connection.sendUtterance(text))
+        } catch (error) {
+            sent = Promise.reject(error)
+        }
+        return sent
             .catch(function (error) {
                 console.error("HiveMind send failed:", error);
                 push_response("Message not sent: " + (error && error.message ? error.message : error));

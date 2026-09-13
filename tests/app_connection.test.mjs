@@ -25,7 +25,9 @@ test("a failed send tells the user the message was not sent", async () => {
     assert.equal(notSent.length, 2, bubbleTexts(page).join(" | "));
 });
 
-test("submit shows a connecting state", () => {
+test("submit shows a connecting state", (t) => {
+    // mock timers, so the connect timeout does not keep the process alive
+    t.mock.timers.enable({ apis: ["setTimeout"] });
     const page = makePage();
     assert.equal(page.byId.connectBtn.textContent(), "Connect to HiveMind");
     page.$("#credentialsForm").trigger("submit");
@@ -44,6 +46,31 @@ test("rejected credentials show one reason and no 'connection lost'", () => {
     assert.match(texts[0], /Could not connect to HiveMind: credentials rejected/);
     assert.equal(page.byId.connectBtn.textContent(), "Connect to HiveMind");
     assert.ok(!("disabled" in page.byId.connectBtn.attrs));
+});
+
+test("a hub that does not answer enables Connect again after the timeout", (t) => {
+    // enable before makePage: the harness copies setTimeout into the page
+    t.mock.timers.enable({ apis: ["setTimeout"] });
+    const page = makePage();
+    page.$("#credentialsForm").trigger("submit");
+    t.mock.timers.tick(14999);
+    assert.equal(page.byId.connectBtn.textContent(), "Connecting...");
+    t.mock.timers.tick(1);
+    assert.equal(page.byId.connectBtn.textContent(), "Connect to HiveMind");
+    assert.ok(!("disabled" in page.byId.connectBtn.attrs));
+    const texts = bubbleTexts(page);
+    assert.equal(texts.length, 1, texts.join(" | "));
+    assert.match(texts[0], /Could not connect to HiveMind: the hub did not answer/);
+});
+
+test("a connect before the timeout cancels it", (t) => {
+    t.mock.timers.enable({ apis: ["setTimeout"] });
+    const page = makePage();
+    page.$("#credentialsForm").trigger("submit");
+    page.client.onHiveConnected();
+    t.mock.timers.tick(20000);
+    assert.equal(page.byId.connectBtn.textContent(), "Connected");
+    assert.ok(!bubbleTexts(page).some((x) => x.includes("did not answer")));
 });
 
 test("a drop after connect says 'connection lost' and keeps one label", () => {
