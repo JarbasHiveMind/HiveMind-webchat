@@ -73,13 +73,21 @@ $(document).ready(function () {
         $('.chat[data-chat = ' + findChat + ']').addClass('active-chat')
     });
 
+    // Text from the user and from the hub is untrusted. Set it with .text(),
+    // never as an HTML string, so markup in it shows as text.
+    function push_bubble(side, icon, msg) {
+        const bubble = $('<div class="bubble ' + side + '">')
+        bubble.append($('<i class="fa ' + icon + '" aria-hidden="true">'))
+        bubble.append($('<span>').text('\u00a0\u00a0' + msg))
+        $('.chat').append(bubble)
+    }
+
     function push_statement(msg) {
-        $('.chat').append('<div class="bubble me"><i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;&nbsp;' + msg + '</div>')
+        push_bubble('me', 'fa-user-circle', msg)
     }
 
     function push_response(msg) {
-        $('.chat').append('<div class="bubble you"><i class="fa fa-commenting" aria-hidden="true"></i>&nbsp;&nbsp;' + msg + '</div>')
-
+        push_bubble('you', 'fa-commenting', msg)
     }
 
     hivemind_connection.onHiveConnected = function () {
@@ -119,7 +127,7 @@ $(document).ready(function () {
 
     $('#textbox_submit').click(function () {
         $(this).blur()
-        $('.chat').append('<div class="bubble me"><i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;<i class="fa fa-volume-up"></i>&nbsp;' + $('#textbox').val() + '</div>')
+        push_statement($('#textbox').val())
         hivemind_connection.sendUtterance($('#textbox').val())
         document.getElementById('textbox').value = ''
         return false
