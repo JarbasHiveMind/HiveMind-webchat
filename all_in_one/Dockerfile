@@ -29,6 +29,9 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
+# Inside the container the UI must listen on all interfaces so that
+# `docker run -p 9090:9090` reaches it.
+ENV WEBCHAT_HOST=0.0.0.0
 EXPOSE 9090
 
 USER hivemind

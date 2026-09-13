@@ -1,22 +1,29 @@
 # Configuration
 
-WebChat has very little to configure: the Python backend takes one flag (the
-HTTP port), and the HiveMind connection details are entered in the browser.
+WebChat has very little to configure: the Python backend takes two flags (the
+HTTP port and the bind address), and the HiveMind connection details are
+entered in the browser.
 
 ## CLI flags — `hivemind-webchat`
 
 ```
-usage: hivemind-webchat [-h] [--port PORT]
+usage: hivemind-webchat [-h] [--port PORT] [--host HOST]
 
 Start HiveMind WebChat
 
 options:
   -h, --help   show this help message and exit
   --port PORT  HTTP port to serve the webchat on (default 9090)
+  --host HOST  address to bind the HTTP server to (default 127.0.0.1; use
+               0.0.0.0 to serve on all interfaces)
 ```
 
 `--port` is the **web server's HTTP port** (where the browser loads the page),
 not the hub's HiveMind port.
+
+`--host` is the address the HTTP server binds to. The default `127.0.0.1`
+serves the page to this machine only. To serve other machines, put a reverse
+proxy in front (see [Deployment](deployment.md)) or use `--host 0.0.0.0`.
 
 ## Browser connection form
 
@@ -42,10 +49,12 @@ connects to a hub, forwards utterances, and logs `speak` replies without a
 browser. The bundled `all_in_one/launch.py` exposes it:
 
 ```
-usage: launch.py [--webchat-port PORT] [--access-key KEY] [--host HOST]
+usage: launch.py [--webchat-port PORT] [--webchat-host HOST] [--access-key KEY] [--host HOST]
                  [--port PORT] [--password PASSWORD] [--self-signed]
 
   --webchat-port  port to serve the webchat UI (default 9090)
+  --webchat-host  address to bind the webchat UI to (default $WEBCHAT_HOST
+                  or 127.0.0.1; the Docker image sets WEBCHAT_HOST=0.0.0.0)
   --access-key    HiveMind access key for the optional headless bridge
   --host          HiveMind hub host (default ws://127.0.0.1)
   --port          HiveMind hub port (default 5678)
