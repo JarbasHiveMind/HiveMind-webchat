@@ -342,6 +342,12 @@ body {
     border-radius: 35px;
 }
 @media only screen and (max-width: 767px) {
+    /* Below 768px the Connect button wraps under the logo, and the fixed
+       navbar is 110px high. */
+    .container {
+        top: 110px;
+        height: calc(100% - 110px);
+    }
     .container .right .bubble {
         font-size: 15px;
         position: relative;
