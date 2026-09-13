@@ -16,10 +16,11 @@ def test_no_dead_static_route_or_handler():
     assert "r\"/static/(.*)\"" not in source
 
 
-def test_css_import_comes_first():
-    rules = re.sub(r"/\*.*?\*/", "", CSS, flags=re.S).lstrip()
-    imports = [m.start() for m in re.finditer(r"@import", rules)]
-    assert all(i == 0 for i in imports), "an @import after a rule is ignored"
+def test_css_imports_nothing():
+    # An @import of a web font sends each viewer's address to that host and
+    # blocks the render on a device with no internet. No rule shows the font.
+    assert "@import" not in CSS
+    assert "googleapis" not in CSS
 
 
 def test_css_loads_no_http_or_third_party_images():
