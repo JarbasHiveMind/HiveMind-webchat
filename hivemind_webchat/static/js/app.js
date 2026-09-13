@@ -117,7 +117,6 @@ $(document).ready(function () {
 
     $('#textbox').keypress(function (e) {
         if (e.which == 13) {
-            $(this).blur()
             push_statement($('#textbox').val())
             hivemind_connection.sendUtterance($('#textbox').val())
             document.getElementById('textbox').value = ''
@@ -130,6 +129,8 @@ $(document).ready(function () {
         push_statement($('#textbox').val())
         hivemind_connection.sendUtterance($('#textbox').val())
         document.getElementById('textbox').value = ''
+        // Keep keyboard focus in the message box for the next message.
+        $('#textbox').focus()
         return false
     })
 
