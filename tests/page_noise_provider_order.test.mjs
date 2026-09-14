@@ -1,12 +1,12 @@
 /**
  * The page must expose the Noise PSK provider BEFORE the client loads.
  *
- * hivemind.js reads globalThis.HiveMindNoble once, when the script runs (the
- * "@noble crypto" block near the top of the client). A `<script type="module">`
- * is always deferred: it runs after every classic `<script src>` in the page.
- * So a module that sets HiveMindNoble next to a classic hivemind.js tag sets it
- * too late, the client keeps argon2id = null, and the page cannot derive the
- * PSK for a default (argon2id) v3 hub.
+ * hivemind.js reads globalThis.HiveMindNoble on each use (the "@noble crypto"
+ * block near the top of the client), so the provider must stay in place for
+ * the whole life of the page. A `<script type="module">` is always deferred:
+ * it runs after every classic `<script src>` in the page. So a module that
+ * sets HiveMindNoble next to a classic hivemind.js tag sets it too late for
+ * any code the client runs at load, and the page must not remove it later.
  *
  * The page therefore loads the client from inside the same module, after the
  * provider is set. This test reads index.html and checks that order.
@@ -99,14 +99,20 @@ async function clientWithPageProvider() {
         return require(clientPath);
     } finally {
         Module.prototype.require = originalRequire;
-        delete globalThis.HiveMindNoble;
     }
+    // The provider stays on globalThis, as it does on the page: the client
+    // reads it on each use. Each caller removes it when it is done.
 }
 
 test('with the page provider the client offers both Noise suites', async () => {
     const hm = await clientWithPageProvider();
-    // ChaChaPoly is the suite every hub MUST support (HIVEMIND-CRYPTO-1 §3.1).
-    // A page that offers only AES-GCM shares no suite with a ChaChaPoly-only hub.
-    assert.deepEqual(hm.NOISE_SUITES_JS,
-        ['25519_ChaChaPoly_SHA256', '25519_AESGCM_SHA256']);
+    try {
+        // ChaChaPoly is the suite every hub MUST support (HIVEMIND-CRYPTO-1 §3.1).
+        // A page that offers only AES-GCM shares no suite with a ChaChaPoly-only
+        // hub.
+        assert.deepEqual(hm.NOISE_SUITES_JS,
+            ['25519_ChaChaPoly_SHA256', '25519_AESGCM_SHA256']);
+    } finally {
+        delete globalThis.HiveMindNoble;
+    }
 });
