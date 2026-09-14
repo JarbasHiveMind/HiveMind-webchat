@@ -127,13 +127,15 @@ handshake, so the UX keeps working against every hivemind-core instance.
 ## Command-line options
 
 ```
-usage: hivemind-webchat [-h] [--port PORT]
+usage: hivemind-webchat [-h] [--port PORT] [--host HOST]
 
 Start HiveMind WebChat
 
 options:
   -h, --help   show this help message and exit
   --port PORT  HTTP port to serve the webchat on (default 9090)
+  --host HOST  address to bind the HTTP server to (default 127.0.0.1; use
+               0.0.0.0 to serve on all interfaces)
 ```
 
 ## How it works

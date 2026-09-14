@@ -12,6 +12,7 @@ HiveMind credentials, an optional headless ``hivemind-bus-client`` bridge to
 an already-running hub. Point a browser at the served page to chat.
 """
 import argparse
+import os
 import time
 
 from ovos_utils import create_daemon
@@ -21,8 +22,8 @@ from hivemind_webchat import webchat
 from hivemind_webchat.bridge import WebchatBridge
 
 
-def start_webchat(port=9090):
-    create_daemon(webchat.main, args=(port,))
+def start_webchat(port=9090, host="127.0.0.1"):
+    create_daemon(webchat.main, args=(port, host))
 
 
 def start_bridge(access_key, host, port, password, self_signed):
@@ -39,6 +40,10 @@ def main():
     parser = argparse.ArgumentParser(description="Serve HiveMind WebChat")
     parser.add_argument("--webchat-port", type=int, default=9090,
                         help="port to serve the webchat UI (default 9090)")
+    parser.add_argument("--webchat-host",
+                        default=os.environ.get("WEBCHAT_HOST", "127.0.0.1"),
+                        help="address to bind the webchat UI to (default "
+                             "$WEBCHAT_HOST or 127.0.0.1)")
     parser.add_argument("--access-key", default=None,
                         help="HiveMind access key for the optional headless bridge")
     parser.add_argument("--host", default="ws://127.0.0.1",
@@ -50,7 +55,7 @@ def main():
                         help="accept self-signed ssl certificates")
     args = parser.parse_args()
 
-    start_webchat(args.webchat_port)
+    start_webchat(args.webchat_port, args.webchat_host)
 
     if args.access_key:
         LOG.info("starting headless bridge to HiveMind hub")
