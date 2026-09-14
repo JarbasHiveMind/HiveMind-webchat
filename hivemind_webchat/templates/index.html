@@ -33,7 +33,7 @@
     <div class="mycroft">
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#"><img src="static/img/ovos-logo-512.png" alt="Mycroft Logo">
+                <a class="navbar-brand" href="#"><img src="static/img/ovos-logo-512.png" alt="OpenVoiceOS">
                 </a>
             </div>
             <!-- Button to open modal -->
@@ -42,13 +42,13 @@
     </div>
 
     <!-- Modal -->
-    <div id="credentialsModal" class="modal fade" role="dialog">
+    <div id="credentialsModal" class="modal fade" role="dialog" aria-labelledby="credentialsTitle">
         <div class="modal-dialog">
             <!-- Modal content -->
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Enter HiveMind Credentials</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="credentialsTitle">Enter HiveMind Credentials</h4>
                 </div>
                 <div class="modal-body">
                     <!-- Form to enter credentials -->
@@ -100,17 +100,18 @@
 	
 <div class="container">
     <div class="right">
-        <div class="chat" data-chat="person2">
+        <div class="chat" data-chat="person2" role="log" aria-live="polite" aria-relevant="additions" aria-label="Chat messages">
         </div>
         <div style="display: none;" id="writer" class="write">
             <div class="row">
                 <div class="form-group">
                     <div class="col-xs-11">
-                        <input type="text" name="body" id="textbox" "/>
+                        <label for="textbox" class="sr-only">Message</label>
+                        <input type="text" name="body" id="textbox" autocomplete="off">
                     </div>
                     <div class="col-xs-1">
                         <button type="submit" id="textbox_submit" class="btn btn-primary pull-right btn-lg RbtnMargin">
-                            Send&nbsp;<i class="fa fa-volume-up"></i></button>
+                            Send&nbsp;<i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>
