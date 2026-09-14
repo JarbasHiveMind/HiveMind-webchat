@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.0a1) (2026-09-14)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.5a1...1.0.0a1)
+
+**Breaking changes:**
+
+- fix!: bind the webchat HTTP server to 127.0.0.1 by default [\#43](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/43) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.4.5a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/0.4.5a1) (2026-09-13)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.4a1...0.4.5a1)
