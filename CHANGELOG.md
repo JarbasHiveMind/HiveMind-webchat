@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.0a2) (2026-09-14)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.0a1...1.0.0a2)
+
+**Merged pull requests:**
+
+- test: keep the page Noise provider set while the client reads it [\#50](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/50) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.0a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.0a1) (2026-09-14)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/0.4.5a1...1.0.0a1)
