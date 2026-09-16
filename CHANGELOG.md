@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.1a1) (2026-09-16)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.0a3...1.0.1a1)
+
+**Merged pull requests:**
+
+- fix: show the connecting state and failed sends in the chat page [\#42](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/42) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.0a3](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.0a3) (2026-09-16)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.0a2...1.0.0a3)
