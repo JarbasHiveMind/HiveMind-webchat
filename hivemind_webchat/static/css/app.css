@@ -48,8 +48,11 @@ body {
 }
 .container {
     position: absolute;
+    /* Start below the fixed navbar (80px brand plus a 1px border), so the
+       navbar does not cover the chat log. */
+    top: 81px;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 81px);
     background-color: #fff;
 
 }
@@ -176,6 +179,12 @@ body {
     border-radius: 35px;
 }
 @media only screen and (max-width: 767px) {
+    /* Below 768px the Connect button wraps under the logo, and the fixed
+       navbar is 110px high. */
+    .container {
+        top: 110px;
+        height: calc(100% - 110px);
+    }
     .container .right .bubble {
         font-size: 15px;
         position: relative;
@@ -402,4 +411,43 @@ input:after {
     -moz-user-select: initial;
     -ms-user-select: initial;
     user-select: initial;
+}
+
+/* Message row: the input takes the free width and the Send button keeps its
+   own width, so the button stays inside the row on a narrow screen. */
+.container .right .write .form-group {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+.container .right .write .row {
+    margin: 0;
+}
+.container .right .write .col-xs-11 {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+}
+.container .right .write .col-xs-1 {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0 0 0 8px;
+}
+.container .right .write input {
+    width: 100%;
+}
+.container .right .write .btn-lg {
+    height: 40px;
+    padding: 0 12px;
+    font-size: 16px;
+}
+@media only screen and (max-width: 767px) {
+    .container .right .chat {
+        padding: 0 12px 92px;
+    }
+    .container .right .write {
+        left: 12px;
+        width: calc(100% - 24px);
+    }
 }
