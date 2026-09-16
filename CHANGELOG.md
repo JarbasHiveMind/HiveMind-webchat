@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.0a3](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.0a3) (2026-09-16)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.0a2...1.0.0a3)
+
+**Merged pull requests:**
+
+- chore: remove dead routes, handlers, CSS rules and unused assets [\#46](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/46) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- fix: keep the Send button and the chat log visible at 400px [\#45](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/45) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.0a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.0a2) (2026-09-14)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.0a1...1.0.0a2)
