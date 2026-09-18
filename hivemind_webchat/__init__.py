@@ -30,11 +30,6 @@ class MainHandler(tornado.web.RequestHandler):
         self.render('index.html')
 
 
-class StaticFileHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.render('js/app.js')
-
-
 class WebChat(threading.Thread):
     def __init__(self, port, host="127.0.0.1", *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,10 +39,9 @@ class WebChat(threading.Thread):
     def run(self):
         asyncio.set_event_loop(asyncio.new_event_loop())
 
+        # /static/ is served by Tornado from settings["static_path"].
         routes = [
             tornado.web.url(r"/", MainHandler, name="main"),
-            tornado.web.url(r"/static/(.*)", tornado.web.StaticFileHandler,
-                            {'path': './'})
         ]
 
         settings = {
