@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.2a1) (2026-09-18)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.1a1...1.0.2a1)
+
+**Merged pull requests:**
+
+- fix: make the chat log, focus, names and reply contrast accessible [\#44](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/44) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.1a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.1a1) (2026-09-16)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.0a3...1.0.1a1)
