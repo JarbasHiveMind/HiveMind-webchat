@@ -11,9 +11,9 @@ jobs:
     with:
       python_versions: '["3.10", "3.11", "3.12", "3.13"]'
       # Build + clean-install verification across all supported Pythons, plus
-      # the fast smoke tests. Dep version policy lives in pyproject.toml; the
-      # bus-client 2.x stack and its pre-release floors resolve from the `e2e`
-      # extra without --pre. The heavier e2e suite (real loopback hub) runs in
-      # e2e_tests.yml on a single Python.
+      # every test in tests/ less tests/e2e. Dep version policy lives in
+      # pyproject.toml; the bus-client 2.x stack and its pre-release floors
+      # resolve from the `e2e` extra without --pre. The heavier e2e suite (real
+      # loopback hub) runs in e2e_tests.yml on a single Python.
       install_extras: 'e2e'
-      test_path: 'tests/test_smoke.py'
+      test_path: 'tests/ --ignore=tests/e2e'
