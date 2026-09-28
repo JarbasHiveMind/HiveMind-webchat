@@ -30,23 +30,18 @@ class MainHandler(tornado.web.RequestHandler):
         self.render('index.html')
 
 
-class StaticFileHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.render('js/app.js')
-
-
 class WebChat(threading.Thread):
-    def __init__(self, port, *args, **kwargs):
+    def __init__(self, port, host="127.0.0.1", *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.port = port
+        self.port = int(port)
+        self.host = host
 
     def run(self):
         asyncio.set_event_loop(asyncio.new_event_loop())
 
+        # /static/ is served by Tornado from settings["static_path"].
         routes = [
             tornado.web.url(r"/", MainHandler, name="main"),
-            tornado.web.url(r"/static/(.*)", tornado.web.StaticFileHandler,
-                            {'path': './'})
         ]
 
         settings = {
@@ -58,8 +53,9 @@ class WebChat(threading.Thread):
         application = tornado.web.Application(routes, **settings)
         httpServer = tornado.httpserver.HTTPServer(application)
 
-        httpServer.listen(self.port)
-        print(f"Starting WebChat: {get_ip()}:{self.port}")
+        httpServer.listen(self.port, address=self.host)
+        shown = get_ip() if self.host in ("0.0.0.0", "") else self.host
+        print(f"Starting WebChat: {shown}:{self.port}")
         tornado.ioloop.IOLoop.instance().start()
 
     def stop(self):

@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+*.egg
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+package-lock.json
