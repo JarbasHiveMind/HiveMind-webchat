@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.3a1) (2026-09-28)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.2a1...1.0.3a1)
+
+**Merged pull requests:**
+
+- fix\(tests\): tests/ is not a package, so the suite imports the wheel [\#57](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/57) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.2a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.2a1) (2026-09-18)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.1a1...1.0.2a1)
