@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3a2](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.3a2) (2026-11-13)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.3a1...1.0.3a2)
+
+**Merged pull requests:**
+
+- ci: build\_tests collects the whole tests/ directory [\#55](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/55) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.3a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.3a1) (2026-09-28)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.2a1...1.0.3a1)
