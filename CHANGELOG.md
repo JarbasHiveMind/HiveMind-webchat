@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.4a1](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.4a1) (2026-11-27)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.3a3...1.0.4a1)
+
+**Merged pull requests:**
+
+- fix: the headless bridge connects with its own webchat identity [\#64](https://github.com/JarbasHiveMind/HiveMind-webchat/pull/64) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.3a3](https://github.com/JarbasHiveMind/HiveMind-webchat/tree/1.0.3a3) (2026-11-13)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-webchat/compare/1.0.3a2...1.0.3a3)
