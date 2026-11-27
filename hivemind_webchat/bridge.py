@@ -9,6 +9,7 @@ utterances to a hub and logging ``speak`` responses without a browser.
 from threading import Thread
 
 from hivemind_bus_client import HiveMessageBusClient, HiveMessage, HiveMessageType
+from hivemind_bus_client.identity import NodeIdentity
 from ovos_bus_client import Message
 from ovos_utils.log import LOG
 
@@ -24,7 +25,8 @@ class WebchatBridge(Thread):
                  password=None,
                  self_signed=False,
                  lang="en-us",
-                 bus=None):
+                 bus=None,
+                 identity=None):
         super().__init__()
         self.lang = lang
         if bus is not None:
@@ -35,7 +37,8 @@ class WebchatBridge(Thread):
                                             host=host,
                                             port=port,
                                             password=password,
-                                            self_signed=self_signed)
+                                            self_signed=self_signed,
+                                            identity=identity or NodeIdentity(app_name="webchat"))
             self.bus.connect()
         self.bus.on_mycroft("speak", self.handle_speak)
 

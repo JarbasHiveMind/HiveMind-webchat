@@ -17,7 +17,7 @@ dependencies = [
     # current hivemind-core requires; floor the bus-client pre-release so a plain
     # install (no --pre) resolves the 1.x line. ovos-bus-client 2.x is pulled
     # transitively by the same alphas.
-    "hivemind-bus-client>=1.0.0a1,<2.0.0",
+    "hivemind-bus-client>=1.2.1a1,<2.0.0",
 ]
 
 [project.optional-dependencies]
